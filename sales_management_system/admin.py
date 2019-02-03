@@ -1,3 +1,5 @@
 from django.contrib import admin
+from .models import Fruit, Sale
 
-# Register your models here.
+admin.site.register(Fruit)
+admin.site.register(Sale)
