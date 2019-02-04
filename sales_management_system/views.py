@@ -16,10 +16,12 @@ class FruitCreateView(CreateView):
     model = Fruit
     form_class = FruitForm
     template_name = "sales_management_system/fruit_form.html"
-    success_url = "/create-fruit"
+    success_url = "/fruit-list"
 
 
 class FruitUpdateView(UpdateView):
 
     model = Fruit
-    fields = ("name", "price",)
+    form_class = FruitForm
+    template_name = "sales_management_system/fruit_form.html"
+    success_url = "/fruit-list"
