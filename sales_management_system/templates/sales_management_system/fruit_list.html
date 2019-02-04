@@ -10,7 +10,7 @@
 <body>
 <section class="section">
  <div class="container">
-  <table class="table">
+  <table class="table is-bordered is-striped">
    <thead>
     <tr>
      <th>ID</th>
@@ -21,6 +21,15 @@
     </tr>
    </thead>
    <tbody>
+       {% for object in object_list %}
+            <tr>
+             <th>{{ object.id }}</th>
+             <td>{{ object.name }}</td>
+             <td>{{ object.price }}</td>
+             <td>{{ object.created_at }}</td>
+             <td><a href="">編集</a> <a href="">削除</a></td>
+            </tr>
+       {% endfor %}
    </tbody>
   </table>
  </div>
