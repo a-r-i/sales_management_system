@@ -1,5 +1,7 @@
 from django.views.generic import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
+from django.shortcuts import redirect
+from django.views import View
 
 from .forms import FruitForm
 from .models import Fruit
@@ -15,20 +17,26 @@ class FruitCreateView(CreateView):
 
     model = Fruit
     form_class = FruitForm
-    template_name = "sales_management_system/fruit_form.html"
-    success_url = "/fruit-list"
+    template_name = 'sales_management_system/fruit_form.html'
+    success_url = '/fruit-list'
 
 
 class FruitUpdateView(UpdateView):
 
     model = Fruit
     form_class = FruitForm
-    template_name = "sales_management_system/fruit_form.html"
-    success_url = "/fruit-list"
+    template_name = 'sales_management_system/fruit_form.html'
+    success_url = '/fruit-list'
 
 
-class FruitDeleteView(DeleteView):
+class FruitDeleteView(View):
+    def get(self, request, pk):
 
-    model = Fruit
-    template_name = "sales_management_system/fruit_confirm_delete.html"
-    success_url = "/fruit-list"
+        try:
+            fruit = Fruit.objects.get(id=pk)
+        except Fruit.DoesNotExist:
+            return redirect('fruit_list')
+        else:
+            fruit.delete()
+
+        return redirect('fruit_list')
