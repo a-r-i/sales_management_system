@@ -1,10 +1,15 @@
-from django.views.generic import ListView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 from django.views import View
 
 from .forms import FruitForm, SaleForm
 from .models import Fruit, Sale
+
+
+class TopView(TemplateView):
+
+    template_name = "sales_management_system/index.html"
 
 
 class FruitListView(ListView):
