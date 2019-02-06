@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 from django.views import View
 
-from .forms import FruitForm
+from .forms import FruitForm, SaleForm
 from .models import Fruit, Sale
 
 
@@ -30,6 +30,7 @@ class FruitUpdateView(UpdateView):
 
 
 class FruitDeleteView(View):
+
     def get(self, request, pk):
 
         fruit = Fruit.objects.get(id=pk)
@@ -39,3 +40,44 @@ class FruitDeleteView(View):
             fruit.delete()
 
         return redirect('fruit_list')
+
+
+class SaleListView(ListView):
+
+    model = Sale
+    queryset = Sale.objects.order_by('-sold_at')
+
+
+class SaleCreateView(CreateView):
+
+    model = Sale
+    form_class = SaleForm
+    template_name = 'sales_management_system/sale_form.html'
+    success_url = '/sale-list'
+
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.total_price = self.culc_total_price(instance.fruit_name, instance.amount)
+        return super(SaleCreateView, self).form_valid(form)
+
+    def culc_total_price(self, fruit_name, amount):
+        fruit = Fruit.objects.get(name__exact=fruit_name)
+        total_price = fruit.price * amount
+        return total_price
+
+
+class SaleUpdateView(UpdateView):
+
+    model = Sale
+    form_class = SaleForm
+    template_name = 'sales_management_system/sale_form.html'
+    success_url = '/sale-list'
+
+
+class SaleDeleteView(View):
+
+    def get(self, request, pk):
+        sale = Sale.objects.get(id=pk)
+        sale.delete()
+
+        return redirect('sale_list')
