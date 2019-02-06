@@ -12,4 +12,5 @@ urlpatterns = [
     path('create-sale', views.SaleCreateView.as_view(), name='create_sale'),
     path('update-sale/<int:pk>', views.SaleUpdateView.as_view(), name='update_sale'),
     path('delete-sale/<int:pk>', views.SaleDeleteView.as_view(), name='delete_sale'),
+    path('sale-statistics', views.SaleStatisticsView.as_view(), name='sale_statistics'),
 ]

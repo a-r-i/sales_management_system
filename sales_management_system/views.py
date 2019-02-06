@@ -86,3 +86,8 @@ class SaleDeleteView(View):
         sale.delete()
 
         return redirect('sale_list')
+
+
+class SaleStatisticsView(TemplateView):
+
+    template_name = "sales_management_system/sale_statistics.html"
