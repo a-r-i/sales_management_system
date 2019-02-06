@@ -1,43 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>果物マスタ管理</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-</head>
-<body>
-<section class="section">
- <div class="container">
-  <table class="table is-bordered is-striped is-fullwidth">
-   <thead>
-    <tr>
-     <th>ID</th>
-     <th>名称</th>
-     <th>単価</th>
-     <th>登録日時</th>
-     <th></th>
-    </tr>
-   </thead>
-   <tbody>
-       {% for object in object_list %}
-            <tr>
-             <th>{{ object.id }}</th>
-             <td>{{ object.name }}</td>
-             <td>{{ object.price }}</td>
-             <td>{{ object.created_at }}</td>
-             <td><a href="./update-fruit/{{ object.id }}">編集</a> <a href="./delete-fruit/{{ object.id }}">削除</a></td>
-            </tr>
-       {% endfor %}
-   </tbody>
-  </table>
- </div>
-</section>
-<section>
- <div class="container">
-  <a class="button is-large is-fullwidth" href="./create-fruit">新規追加</a>
- </div>
-</section>
-</body>
-</html>
+{% extends 'sales_management_system/base.html' %}
+
+{% block content %}
+    <section class="section">
+     <div class="container">
+      <table class="table is-bordered is-striped is-fullwidth">
+       <thead>
+        <tr>
+         <th>ID</th>
+         <th>名称</th>
+         <th>単価</th>
+         <th>登録日時</th>
+         <th></th>
+        </tr>
+       </thead>
+       <tbody>
+           {% for object in object_list %}
+                <tr>
+                 <th>{{ object.id }}</th>
+                 <td>{{ object.name }}</td>
+                 <td>{{ object.price }}</td>
+                 <td>{{ object.created_at }}</td>
+                 <td><a href="./update-fruit/{{ object.id }}">編集</a> <a href="./delete-fruit/{{ object.id }}">削除</a></td>
+                </tr>
+           {% endfor %}
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section>
+     <div class="container">
+      <a class="button is-large is-fullwidth" href="./create-fruit">新規追加</a>
+     </div>
+    </section>
+{% endblock %}

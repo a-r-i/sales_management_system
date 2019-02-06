@@ -1,45 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>販売情報管理</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-</head>
-<body>
-<section class="section">
- <div class="container">
-  <table class="table is-bordered is-striped is-fullwidth">
-   <thead>
-    <tr>
-     <th>果物</th>
-     <th>個数</th>
-     <th>売り上げ</th>
-     <th>販売日時</th>
-     <th></th>
-     <th></th>
-    </tr>
-   </thead>
-   <tbody>
-       {% for object in object_list %}
-            <tr>
-             <th>{{ object.fruit_name }}</th>
-             <td>{{ object.amount }}</td>
-             <td>{{ object.total_price }}</td>
-             <td>{{ object.sold_at }}</td>
-             <td><a href="./update-sale/{{ object.id }}">編集</a></td>
-             <td><a href="./delete-sale/{{ object.id }}">削除</a></td>
-            </tr>
-       {% endfor %}
-   </tbody>
-  </table>
- </div>
-</section>
-<section>
- <div class="container">
-  <a class="button is-large is-fullwidth" href="./create-sale">販売情報登録</a>
- </div>
-</section>
-</body>
-</html>
+{% extends 'sales_management_system/base.html' %}
+
+{% block content %}
+    <section class="section">
+     <div class="container">
+      <table class="table is-bordered is-striped is-fullwidth">
+       <thead>
+        <tr>
+         <th>果物</th>
+         <th>個数</th>
+         <th>売り上げ</th>
+         <th>販売日時</th>
+         <th></th>
+         <th></th>
+        </tr>
+       </thead>
+       <tbody>
+           {% for object in object_list %}
+                <tr>
+                 <th>{{ object.fruit_name }}</th>
+                 <td>{{ object.amount }}</td>
+                 <td>{{ object.total_price }}</td>
+                 <td>{{ object.sold_at }}</td>
+                 <td><a href="./update-sale/{{ object.id }}">編集</a></td>
+                 <td><a href="./delete-sale/{{ object.id }}">削除</a></td>
+                </tr>
+           {% endfor %}
+       </tbody>
+      </table>
+     </div>
+    </section>
+    <section>
+     <div class="container">
+      <a class="button is-large is-fullwidth" href="./create-sale">販売情報登録</a>
+     </div>
+    </section>
+{% endblock %}
