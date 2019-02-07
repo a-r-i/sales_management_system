@@ -37,12 +37,8 @@ class FruitUpdateView(UpdateView):
 class FruitDeleteView(View):
 
     def get(self, request, pk):
-
         fruit = Fruit.objects.get(id=pk)
-        sales_count = Sale.objects.filter(fruit_name__exact=fruit.name).count()
-
-        if sales_count != 0:
-            fruit.delete()
+        fruit.delete()
 
         return redirect('fruit_list')
 
