@@ -11,7 +11,8 @@ class FruitForm(ModelForm):
         fields = ('name', 'price',)
 
 
-class SaleForm(ModelForm):
-    class Meta:
-        model = Sale
-        fields = ('fruit', 'amount', 'sold_at')
+class SaleForm(forms.Form):
+
+    fruit = forms.ModelChoiceField(Fruit.objects)
+    amount = forms.IntegerField()
+    sold_at = forms.DateTimeField()

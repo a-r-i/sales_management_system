@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView, ListView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 from django.views import View
@@ -49,7 +49,7 @@ class SaleListView(ListView):
     queryset = Sale.objects.order_by('-sold_at')
 
 
-class SaleCreateView(CreateView):
+class SaleCreateView(FormView):
 
     model = Sale
     form_class = SaleForm
@@ -57,13 +57,19 @@ class SaleCreateView(CreateView):
     success_url = '/sale-list'
 
     def form_valid(self, form):
-        instance = form.save(commit=False)
-        instance.total_price = self.culc_total_price(instance.fruit_name, instance.amount)
+        fruit_name = form.cleaned_data['fruit']
+        amount = form.cleaned_data['amount']
+        total_price = self.culc_total_price(fruit_name, amount)
+        sold_at = form.cleaned_data['sold_at']
+        sale = Sale(fruit=fruit_name, amount=amount, total_price=total_price, sold_at=sold_at)
+        sale.save()
+
         return super(SaleCreateView, self).form_valid(form)
 
     def culc_total_price(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
         total_price = fruit.price * amount
+
         return total_price
 
 
