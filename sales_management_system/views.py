@@ -39,7 +39,6 @@ class FruitDeleteView(View):
     def get(self, request, pk):
         fruit = Fruit.objects.get(id=pk)
         fruit.delete()
-
         return redirect('fruit_list')
 
 
@@ -63,13 +62,11 @@ class SaleCreateView(FormView):
         sold_at = form.cleaned_data['sold_at']
         sale = Sale(fruit=fruit_name, amount=amount, total_price=total_price, sold_at=sold_at)
         sale.save()
-
         return super(SaleCreateView, self).form_valid(form)
 
     def culc_total_price(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
         total_price = fruit.price * amount
-
         return total_price
 
 
@@ -86,7 +83,6 @@ class SaleDeleteView(View):
     def get(self, request, pk):
         sale = Sale.objects.get(id=pk)
         sale.delete()
-
         return redirect('sale_list')
 
 
