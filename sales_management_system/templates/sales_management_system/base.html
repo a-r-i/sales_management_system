@@ -27,6 +27,17 @@
   </div>
  </div>
 </section>
+<section>
+ <div class="container">
+  <nav class="breadcrumb has-succeeds-separator" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="/">TOP</a></li>
+      {% block breadcrumb-li %}
+      {% endblock %}
+  </ul>
+  </nav>
+ </div>
+</section>
 {% block content %}
 {% endblock %}
 </body>
