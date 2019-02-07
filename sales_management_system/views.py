@@ -48,7 +48,7 @@ class SaleListView(ListView):
     queryset = Sale.objects.order_by('-sold_at')
 
 
-class SaleCreateView(FormView):
+class SaleFormView(FormView):
 
     model = Sale
     form_class = SaleForm
@@ -60,22 +60,27 @@ class SaleCreateView(FormView):
         amount = form.cleaned_data['amount']
         total_price = self.culc_total_price(fruit_name, amount)
         sold_at = form.cleaned_data['sold_at']
-        sale = Sale(fruit=fruit_name, amount=amount, total_price=total_price, sold_at=sold_at)
-        sale.save()
-        return super(SaleCreateView, self).form_valid(form)
+
+        # 新規登録と編集で処理を分ける
+        try:
+            pk = self.kwargs['pk']
+        except KeyError:  # 新規登録
+            sale = Sale(fruit=fruit_name, amount=amount, total_price=total_price, sold_at=sold_at)
+            sale.save()
+        else:  # 編集
+            sale = Sale.objects.get(id=pk)
+            sale.fruit = fruit_name
+            sale.amount = amount
+            sale.total_price = total_price
+            sale.sold_at = sold_at
+            sale.save()
+
+        return super(SaleFormView, self).form_valid(form)
 
     def culc_total_price(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
         total_price = fruit.price * amount
         return total_price
-
-
-class SaleUpdateView(UpdateView):
-
-    model = Sale
-    form_class = SaleForm
-    template_name = 'sales_management_system/sale_form.html'
-    success_url = '/sale-list'
 
 
 class SaleDeleteView(View):
