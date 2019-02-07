@@ -12,7 +12,7 @@ class Fruit(models.Model):
 
 
 class Sale(models.Model):
-    fruit_name = models.CharField(max_length=100)
+    fruit = models.ForeignKey(Fruit, on_delete=models.CASCADE)
     amount = models.IntegerField()
     total_price = models.IntegerField()  # 合計金額
     sold_at = models.DateTimeField()  # 販売日時
