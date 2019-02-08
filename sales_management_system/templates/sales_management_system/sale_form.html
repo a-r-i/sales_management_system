@@ -9,34 +9,38 @@
 {% endblock %}
 
 {% block content %}
-<form method="post">
-{% csrf_token %}
+    <section class="section">
+     <div class="container">
+        <form method="post">
+        {% csrf_token %}
 
- <div class="field">
-  <label class="label">名称</label>
-  <div class="control">
-    {{ form.fruit }}
-  </div>
- </div>
+         <div class="field">
+          <label class="label">名称</label>
+          <div class="control">
+            {{ form.fruit }}
+          </div>
+         </div>
 
- <div class="field">
-   <label class="label">個数</label>
-   <div class="control">
-     {{ form.amount }}
-   </div>
-  </div>
+         <div class="field">
+           <label class="label">個数</label>
+           <div class="control">
+             {{ form.amount }}
+           </div>
+          </div>
 
- <div class="field">
-   <label class="label">販売日時</label>
-   <div class="control">
-     {{ form.sold_at }}
-   </div>
-  </div>
+         <div class="field">
+           <label class="label">販売日時</label>
+           <div class="control">
+             {{ form.sold_at }}
+           </div>
+          </div>
 
-  <div class="control">
-    <button class="button is-link" type="submit">登録</button>
-  </div>
-</form>
+          <div class="control">
+            <button class="button is-link" type="submit">登録</button>
+          </div>
+        </form>
+     </div>
+    </section>
 {% endblock %}
 </body>
 </html>
