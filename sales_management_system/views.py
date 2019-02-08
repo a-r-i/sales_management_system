@@ -65,13 +65,13 @@ class SaleFormView(FormView):
         try:
             pk = self.kwargs['pk']
         except KeyError:  # 新規登録
-            sale = Sale(fruit=fruit_name, amount=amount, total_price=price_sum, sold_at=sold_at)
+            sale = Sale(fruit=fruit_name, amount=amount, price_sum=price_sum, sold_at=sold_at)
             sale.save()
         else:  # 編集
             sale = Sale.objects.get(id=pk)
             sale.fruit = fruit_name
             sale.amount = amount
-            sale.total_price = price_sum
+            sale.price_sum = price_sum
             sale.sold_at = sold_at
             sale.save()
 
