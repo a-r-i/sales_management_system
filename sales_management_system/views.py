@@ -112,6 +112,7 @@ class SaleStatisticsView(TemplateView):
 
         return revenue_sum
 
+    # のちのち仕様が変わったときのために、「3」という定数を使わないほうがいい？集計する月数・日数を引数で与えるよう変えるべきか
     def total_last3months_sales(self):
         last3months_sales_data = [{'date': '2019/1', 'revenue': 100, 'detail': 'hoge'}]
         return last3months_sales_data
