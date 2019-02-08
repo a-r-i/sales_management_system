@@ -1,17 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>果物登録</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
-    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-</head>
-<body>
-<section class="section">
- <div class="container">
-  {% block content %}
+{% extends 'sales_management_system/base.html' %}
 
+{% block pagetitle %}
+   果物登録
+{% endblock %}
+
+{% block content %}
     <form method="post">
     {% csrf_token %}
 
@@ -33,9 +26,6 @@
         <button class="button is-link" type="submit">登録</button>
       </div>
     </form>
-
-  {% endblock %}
- </div>
-</section>
+{% endblock %}
 </body>
 </html>
