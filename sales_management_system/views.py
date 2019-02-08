@@ -94,3 +94,8 @@ class SaleDeleteView(View):
 class SaleStatisticsView(TemplateView):
 
     template_name = "sales_management_system/sale_statistics.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total_sales"] = 100
+        return context
