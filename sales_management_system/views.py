@@ -97,5 +97,9 @@ class SaleStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["total_sales"] = 100
+        context["total_sales"] = self.culc_total_sales()
         return context
+
+    def culc_total_sales(self):
+        total_sales = 123
+        return total_sales
