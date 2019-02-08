@@ -101,5 +101,11 @@ class SaleStatisticsView(TemplateView):
         return context
 
     def culc_total_sales(self):
-        total_sales = 123
+        total_sales = 0
+
+        sale_objects_all = Sale.objects.all()
+
+        for sale_object in sale_objects_all:
+            total_sales += sale_object.total_price
+
         return total_sales
