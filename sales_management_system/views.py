@@ -58,29 +58,29 @@ class SaleFormView(FormView):
     def form_valid(self, form):
         fruit_name = form.cleaned_data['fruit']
         amount = form.cleaned_data['amount']
-        total_price = self.culc_total_price(fruit_name, amount)
+        price_sum = self.culc_price_sum(fruit_name, amount)
         sold_at = form.cleaned_data['sold_at']
 
         # 新規登録と編集で処理を分ける
         try:
             pk = self.kwargs['pk']
         except KeyError:  # 新規登録
-            sale = Sale(fruit=fruit_name, amount=amount, total_price=total_price, sold_at=sold_at)
+            sale = Sale(fruit=fruit_name, amount=amount, total_price=price_sum, sold_at=sold_at)
             sale.save()
         else:  # 編集
             sale = Sale.objects.get(id=pk)
             sale.fruit = fruit_name
             sale.amount = amount
-            sale.total_price = total_price
+            sale.total_price = price_sum
             sale.sold_at = sold_at
             sale.save()
 
         return super(SaleFormView, self).form_valid(form)
 
-    def culc_total_price(self, fruit_name, amount):
+    def culc_price_sum(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
-        total_price = fruit.price * amount
-        return total_price
+        price_sum = fruit.price * amount
+        return price_sum
 
 
 class SaleDeleteView(View):
@@ -97,15 +97,20 @@ class SaleStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["total_sales"] = self.culc_total_sales()
+        context['revenue_sum'] = self.culc_revenue_sum()
+        context['last3months_sales_data'] = self.total_last3months_sales()
         return context
 
-    def culc_total_sales(self):
-        total_sales = 0
+    def culc_revenue_sum(self):
+        revenue_sum = 0
 
         sale_objects_all = Sale.objects.all()
 
         for sale_object in sale_objects_all:
-            total_sales += sale_object.total_price
+            revenue_sum += sale_object.total_price
 
-        return total_sales
+        return revenue_sum
+
+    def total_last3months_sales(self):
+        last3months_sales_data = [{'date': '2019/1', 'revenue': 100, 'detail': 'hoge'}]
+        return last3months_sales_data

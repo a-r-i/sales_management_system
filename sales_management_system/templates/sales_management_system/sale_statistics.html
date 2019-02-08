@@ -22,6 +22,24 @@
     <section class="section">
      <div class="container">
       <h3 class="title is-3">月別</h3>
+       <table class="table is-bordered is-striped is-fullwidth">
+       <thead>
+        <tr>
+         <th>月</th>
+         <th>売り上げ</th>
+         <th>内訳</th>
+        </tr>
+       </thead>
+       <tbody>
+           {% for monthly_sales_data in last3months_sales_data %}
+                <tr>
+                 <th>{{ monthly_sales_data.date }}</th>
+                 <td>{{ monthly_sales_data.revenue }}</td>
+                 <td>{{ monthly_sales_data.detail }}</td>
+                </tr>
+           {% endfor %}
+       </tbody>
+      </table>
      </div>
     </section>
     <section class="section">
