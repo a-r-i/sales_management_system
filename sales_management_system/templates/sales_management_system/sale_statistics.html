@@ -1,4 +1,8 @@
-{% extends 'sales_management_system/base.html' %}
+{% extends 'sales_management_system/base_breadcrumb.html' %}
+
+{% block header %}
+    {%  include 'sales_management_system/header.html' %}
+{% endblock %}
 
 {% block pagetitle %}
     販売統計情報
