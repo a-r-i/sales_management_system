@@ -99,6 +99,7 @@ class SaleStatisticsView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['revenue_sum'] = self.culc_revenue_sum()
         context['last3months_sales_data'] = self.total_last3months_sales()
+        context['last3days_sales_data'] = self.total_last3days_sales()
         return context
 
     def culc_revenue_sum(self):
@@ -107,10 +108,14 @@ class SaleStatisticsView(TemplateView):
         sale_objects_all = Sale.objects.all()
 
         for sale_object in sale_objects_all:
-            revenue_sum += sale_object.total_price
+            revenue_sum += sale_object.price_sum
 
         return revenue_sum
 
     def total_last3months_sales(self):
         last3months_sales_data = [{'date': '2019/1', 'revenue': 100, 'detail': 'hoge'}]
         return last3months_sales_data
+
+    def total_last3days_sales(self):
+        last3days_sales_data = [{'date': '2019/2/7', 'revenue': 100, 'detail': 'hoge'}]
+        return last3days_sales_data

@@ -45,6 +45,24 @@
     <section class="section">
      <div class="container">
       <h3 class="title is-3">日別</h3>
+       <table class="table is-bordered is-striped is-fullwidth">
+       <thead>
+        <tr>
+         <th>日</th>
+         <th>売り上げ</th>
+         <th>内訳</th>
+        </tr>
+       </thead>
+       <tbody>
+           {% for daily_sales_data in last3days_sales_data %}
+                <tr>
+                 <th>{{ daily_sales_data.date }}</th>
+                 <td>{{ daily_sales_data.revenue }}</td>
+                 <td>{{ daily_sales_data.detail }}</td>
+                </tr>
+           {% endfor %}
+       </tbody>
+      </table>
      </div>
     </section>
 {% endblock %}
