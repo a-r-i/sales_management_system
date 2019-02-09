@@ -1,7 +1,13 @@
+from datetime import date, datetime, timedelta
+
+from django.conf import settings
 from django.views.generic import TemplateView, ListView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
+from django.utils.timezone import make_aware
 from django.views import View
+
+import pytz
 
 from .forms import FruitForm, SaleForm
 from .models import Fruit, Sale
@@ -118,5 +124,23 @@ class SaleStatisticsView(TemplateView):
         return last3months_sales_data
 
     def total_last3days_sales(self):
-        last3days_sales_data = [{'date': '2019/2/7', 'revenue': 100, 'detail': 'hoge'}]
+        last3days_sales_data = []
+
+        now = datetime.now(pytz.timezone('Asia/Tokyo'))
+        today = now.date()
+
+        for i in range(1, 4):
+            day = today + timedelta(days=-i)
+            sales_objects_of_day = Sale.objects.filter(sold_at__range=[day, today])
+            revenue_of_day = self.total_revenue_of_day(sales_objects_of_day)
+            last3days_sales_data.append({'date': day, 'revenue': revenue_of_day, 'detail': 'hoge'})
+
         return last3days_sales_data
+
+    def total_revenue_of_day(self, sales_objects_of_day):
+        revenue_of_day = 0
+
+        for sales_object in sales_objects_of_day:
+            revenue_of_day += sales_object.price_sum
+
+        return revenue_of_day
