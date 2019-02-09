@@ -1,10 +1,8 @@
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
-from django.conf import settings
 from django.views.generic import TemplateView, ListView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
-from django.utils.timezone import make_aware
 from django.views import View
 
 import pytz
