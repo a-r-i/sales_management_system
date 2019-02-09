@@ -128,30 +128,30 @@ class SaleStatisticsView(TemplateView):
         today = now.date()
 
         for i in range(1, 4):
-            day = today + timedelta(days=-i)
+            target_day = today + timedelta(days=-i)
 
-            sale_objects_of_day = Sale.objects.filter(sold_at__range=[day, today])
+            sale_objects_of_target_day = Sale.objects.filter(sold_at__range=[target_day, today])
 
-            daily_revenue = self.aggregate_daily_revenue(sale_objects_of_day)
-            daily_detail = self.aggregate_daily_detail(sale_objects_of_day)
+            daily_revenue = self.aggregate_daily_revenue(sale_objects_of_target_day)
+            daily_detail = self.aggregate_daily_detail(sale_objects_of_target_day)
 
-            last3days_sales.append({'date': day, 'revenue': daily_revenue, 'detail': daily_detail})
+            last3days_sales.append({'date': target_day, 'revenue': daily_revenue, 'detail': daily_detail})
 
         return last3days_sales
 
-    def aggregate_daily_revenue(self, sale_objects_of_day):
+    def aggregate_daily_revenue(self, sale_objects_of_target_day):
         daily_revenue = 0
 
-        for sale_object in sale_objects_of_day:
-            daily_revenue += sale_object.revenue
+        for sale_object_of_target_day in sale_objects_of_target_day:
+            daily_revenue += sale_object_of_target_day.revenue
 
         return daily_revenue
 
-    def aggregate_daily_detail(self, sales_objects_of_day):
+    def aggregate_daily_detail(self, sales_objects_of_target_day):
         daily_detail = ''
         space = ' '
 
-        for sales_object in sales_objects_of_day:
-            daily_detail += '%s:%i円(%i)' % (sales_object.fruit, sales_object.revenue, sales_object.amount) + space
+        for sales_object_of_target_day in sales_objects_of_target_day:
+            daily_detail += '%s:%i円(%i)' % (sales_object_of_target_day.fruit, sales_object_of_target_day.revenue, sales_object_of_target_day.amount) + space
 
         return daily_detail
