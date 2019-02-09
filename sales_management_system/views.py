@@ -130,18 +130,17 @@ class SaleStatisticsView(TemplateView):
         for i in range(1, 4):
             target_day = today + timedelta(days=-i)
 
-            daily_revenue = self.aggregate_daily_revenue(target_day, today)
-            sale_objects_of_target_day = Sale.objects.filter(sold_at__range=[target_day, today])
+            sale_objects_of_target_day = Sale.objects.filter(sold_at__date=target_day)
+
+            daily_revenue = self.aggregate_daily_revenue(sale_objects_of_target_day)
             daily_detail = self.aggregate_daily_detail(sale_objects_of_target_day)
 
             last3days_sales.append({'date': target_day, 'revenue': daily_revenue, 'detail': daily_detail})
 
         return last3days_sales
 
-    def aggregate_daily_revenue(self, target_day, today):
+    def aggregate_daily_revenue(self, sale_objects_of_target_day):
         daily_revenue = 0
-
-        sale_objects_of_target_day = Sale.objects.filter(sold_at__range=[target_day, today])
 
         for sale_object_of_target_day in sale_objects_of_target_day:
             daily_revenue += sale_object_of_target_day.revenue
@@ -149,10 +148,21 @@ class SaleStatisticsView(TemplateView):
         return daily_revenue
 
     def aggregate_daily_detail(self, sales_objects_of_target_day):
-        daily_detail = ''
-        space = ' '
+        daily_detail_dict = {}
 
-        for sales_object_of_target_day in sales_objects_of_target_day:
-            daily_detail += '%s:%i円(%i)' % (sales_object_of_target_day.fruit, sales_object_of_target_day.revenue, sales_object_of_target_day.amount) + space
+        for object in sales_objects_of_target_day:
+            fruit_name = str(object.fruit)
+            if fruit_name in daily_detail_dict.keys():
+                daily_detail_dict[fruit_name]['revenue'] += object.revenue
+                daily_detail_dict[fruit_name]['amount'] += object.amount
+            else:
+                daily_detail_dict[fruit_name] = {}
+                daily_detail_dict[fruit_name]['revenue'] = object.revenue
+                daily_detail_dict[fruit_name]['amount'] = object.amount
+
+        daily_detail = ''
+
+        for key, value in daily_detail_dict.items():
+            daily_detail += '%s:%i円(%i)' % (key, value['revenue'], value['amount'])
 
         return daily_detail
