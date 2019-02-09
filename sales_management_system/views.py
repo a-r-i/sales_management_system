@@ -101,20 +101,11 @@ class SaleStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['total_revenue'] = self.aggregate_total_revenue()
+        sale_objects_all = Sale.objects.all()
+        context['total_revenue'] = self.aggregate_revenue(sale_objects_all)
         context['last3months_sales'] = self.aggregate_last3months_sales()
         context['last3days_sales'] = self.aggregate_last3days_sales()
         return context
-
-    def aggregate_total_revenue(self):
-        total_revenue = 0
-
-        sale_objects_all = Sale.objects.all()
-
-        for sale_object in sale_objects_all:
-            total_revenue += sale_object.revenue
-
-        return total_revenue
 
     # のちのち仕様が変わったときのために、「3」という定数を使わないほうがいい？集計する月数・日数を引数で与えるよう変えるべきか
     def aggregate_last3months_sales(self):
@@ -132,20 +123,20 @@ class SaleStatisticsView(TemplateView):
 
             sale_objects_of_target_day = Sale.objects.filter(sold_at__date=target_day)
 
-            daily_revenue = self.aggregate_daily_revenue(sale_objects_of_target_day)
+            daily_revenue = self.aggregate_revenue(sale_objects_of_target_day)
             daily_detail = self.aggregate_daily_detail(sale_objects_of_target_day)
 
             last3days_sales.append({'date': target_day, 'revenue': daily_revenue, 'detail': daily_detail})
 
         return last3days_sales
 
-    def aggregate_daily_revenue(self, sale_objects_of_target_day):
-        daily_revenue = 0
+    def aggregate_revenue(self, sale_objects):
+        total_revenue = 0
 
-        for sale_object_of_target_day in sale_objects_of_target_day:
-            daily_revenue += sale_object_of_target_day.revenue
+        for sale_object in sale_objects:
+            total_revenue += sale_object.revenue
 
-        return daily_revenue
+        return total_revenue
 
     def aggregate_daily_detail(self, sales_objects_of_target_day):
         daily_detail_dict = {}
