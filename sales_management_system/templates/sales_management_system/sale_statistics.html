@@ -31,7 +31,7 @@
         </tr>
        </thead>
        <tbody>
-           {% for monthly_sales_data in last3months_sales_data %}
+           {% for monthly_sales_data in last3months_sales %}
                 <tr>
                  <th>{{ monthly_sales_data.date }}</th>
                  <td>{{ monthly_sales_data.revenue }}</td>
@@ -54,7 +54,7 @@
         </tr>
        </thead>
        <tbody>
-           {% for daily_sales_data in last3days_sales_data %}
+           {% for daily_sales_data in last3days_sales %}
                 <tr>
                  <th>{{ daily_sales_data.date }}</th>
                  <td>{{ daily_sales_data.revenue }}</td>

@@ -64,7 +64,7 @@ class SaleFormView(FormView):
     def form_valid(self, form):
         fruit_name = form.cleaned_data['fruit']
         amount = form.cleaned_data['amount']
-        revenue = self.culc_revenue(fruit_name, amount)
+        revenue = self.calclate_revenue(fruit_name, amount)
         sold_at = form.cleaned_data['sold_at']
 
         # 新規登録と編集で処理を分ける
@@ -83,7 +83,7 @@ class SaleFormView(FormView):
 
         return super(SaleFormView, self).form_valid(form)
 
-    def culc_revenue(self, fruit_name, amount):
+    def calclate_revenue(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
         revenue = fruit.price * amount
         return revenue
@@ -103,28 +103,28 @@ class SaleStatisticsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['revenue_sum'] = self.culc_revenue_sum()
-        context['last3months_sales_data'] = self.total_last3months_sales()
-        context['last3days_sales_data'] = self.total_last3days_sales()
+        context['total_revenue'] = self.aggregate_total_revenue()
+        context['last3months_sales'] = self.aggregate_last3months_sales()
+        context['last3days_sales'] = self.aggregate_last3days_sales()
         return context
 
-    def culc_revenue_sum(self):
-        revenue_sum = 0
+    def aggregate_total_revenue(self):
+        total_revenue = 0
 
         sale_objects_all = Sale.objects.all()
 
         for sale_object in sale_objects_all:
-            revenue_sum += sale_object.revenue
+            total_revenue += sale_object.revenue
 
-        return revenue_sum
+        return total_revenue
 
     # のちのち仕様が変わったときのために、「3」という定数を使わないほうがいい？集計する月数・日数を引数で与えるよう変えるべきか
-    def total_last3months_sales(self):
-        last3months_sales_data = [{'date': '2019/1', 'revenue': 100, 'detail': 'hoge'}]
-        return last3months_sales_data
+    def aggregate_last3months_sales(self):
+        last3months_sales = [{'date': '2019/1', 'revenue': 100, 'detail': 'hoge'}]
+        return last3months_sales
 
-    def total_last3days_sales(self):
-        last3days_sales_data = []
+    def aggregate_last3days_sales(self):
+        last3days_sales = []
 
         now = datetime.now(pytz.timezone('Asia/Tokyo'))
         today = now.date()
@@ -132,15 +132,15 @@ class SaleStatisticsView(TemplateView):
         for i in range(1, 4):
             day = today + timedelta(days=-i)
             sales_objects_of_day = Sale.objects.filter(sold_at__range=[day, today])
-            revenue_of_day = self.total_revenue_of_day(sales_objects_of_day)
-            last3days_sales_data.append({'date': day, 'revenue': revenue_of_day, 'detail': 'hoge'})
+            daily_revenue = self.aggregate_daily_revenue(sales_objects_of_day)
+            last3days_sales.append({'date': day, 'revenue': daily_revenue, 'detail': 'hoge'})
 
-        return last3days_sales_data
+        return last3days_sales
 
-    def total_revenue_of_day(self, sales_objects_of_day):
-        revenue_of_day = 0
+    def aggregate_daily_revenue(self, sales_objects_of_day):
+        daily_revenue = 0
 
         for sales_object in sales_objects_of_day:
-            revenue_of_day += sales_object.revenue
+            daily_revenue += sales_object.revenue
 
-        return revenue_of_day
+        return daily_revenue
