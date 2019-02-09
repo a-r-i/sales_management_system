@@ -131,9 +131,13 @@ class SaleStatisticsView(TemplateView):
 
         for i in range(1, 4):
             day = today + timedelta(days=-i)
+
             sales_objects_of_day = Sale.objects.filter(sold_at__range=[day, today])
+
             daily_revenue = self.aggregate_daily_revenue(sales_objects_of_day)
-            last3days_sales.append({'date': day, 'revenue': daily_revenue, 'detail': 'hoge'})
+            daily_detail = self.aggregate_daily_detail(sales_objects_of_day)
+
+            last3days_sales.append({'date': day, 'revenue': daily_revenue, 'detail': daily_detail})
 
         return last3days_sales
 
@@ -144,3 +148,12 @@ class SaleStatisticsView(TemplateView):
             daily_revenue += sales_object.revenue
 
         return daily_revenue
+
+    def aggregate_daily_detail(self, sales_objects_of_day):
+        daily_detail = ''
+        space = ' '
+
+        for sales_object in sales_objects_of_day:
+            daily_detail += '%s:%i円(%i)' % (sales_object.fruit, sales_object.revenue, sales_object.amount) + space
+
+        return daily_detail
