@@ -5,6 +5,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 from django.views import View
 
+from dateutil.relativedelta import relativedelta
 import pytz
 
 from .forms import FruitForm, SaleForm
@@ -103,32 +104,34 @@ class SaleStatisticsView(TemplateView):
         context = super().get_context_data(**kwargs)
         sale_objects_all = Sale.objects.all()
         context['total_revenue'] = self.aggregate_revenue(sale_objects_all)
-        context['last3months_sales'] = self.aggregate_last3months_sales()
-        context['last3days_sales'] = self.aggregate_last3days_sales()
+        context['last3months_sales_infomation'] = self.aggregate_sales_infomation('month', 3)
+        context['last3days_sales_infomation'] = self.aggregate_sales_infomation('day', 3)
         return context
 
-    # のちのち仕様が変わったときのために、「3」という定数を使わないほうがいい？集計する月数・日数を引数で与えるよう変えるべきか
-    def aggregate_last3months_sales(self):
-        last3months_sales = [{'date': '2019/1', 'revenue': 100, 'detail': 'hoge'}]
-        return last3months_sales
-
-    def aggregate_last3days_sales(self):
-        last3days_sales = []
+    def aggregate_sales_infomation(self, date_type, number):
+        sales_infomation = []
 
         now = datetime.now(pytz.timezone('Asia/Tokyo'))
         today = now.date()
 
-        for i in range(1, 4):
-            target_day = today + timedelta(days=-i)
+        for i in range(1, number+1):
+            if date_type == 'month':
+                today_aggregate_month = today + relativedelta(months=-i)
+                first_day_aggregate_month = today_aggregate_month.replace(day=1)
+                last_day_aggregate_month = first_day_aggregate_month + relativedelta(months=1, days=-1)
+                aggregate_date = '%i年%i月' % (first_day_aggregate_month.year, first_day_aggregate_month.month)
+                sale_objects = Sale.objects.filter(sold_at__range=[first_day_aggregate_month, last_day_aggregate_month])
+                revenue = self.aggregate_revenue(sale_objects)
+                detail = self.aggregate_detail(sale_objects)
+                sales_infomation.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
+            elif date_type == 'day':
+                aggregate_date = today + timedelta(days=-i)
+                sale_objects = Sale.objects.filter(sold_at__date=aggregate_date)
+                revenue = self.aggregate_revenue(sale_objects)
+                detail = self.aggregate_detail(sale_objects)
+                sales_infomation.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
 
-            sale_objects_of_target_day = Sale.objects.filter(sold_at__date=target_day)
-
-            daily_revenue = self.aggregate_revenue(sale_objects_of_target_day)
-            daily_detail = self.aggregate_detail(sale_objects_of_target_day)
-
-            last3days_sales.append({'date': target_day, 'revenue': daily_revenue, 'detail': daily_detail})
-
-        return last3days_sales
+        return sales_infomation
 
     def aggregate_revenue(self, sale_objects):
         total_revenue = 0
