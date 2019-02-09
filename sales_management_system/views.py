@@ -64,29 +64,29 @@ class SaleFormView(FormView):
     def form_valid(self, form):
         fruit_name = form.cleaned_data['fruit']
         amount = form.cleaned_data['amount']
-        price_sum = self.culc_price_sum(fruit_name, amount)
+        revenue = self.culc_revenue(fruit_name, amount)
         sold_at = form.cleaned_data['sold_at']
 
         # 新規登録と編集で処理を分ける
         try:
             pk = self.kwargs['pk']
         except KeyError:  # 新規登録
-            sale = Sale(fruit=fruit_name, amount=amount, price_sum=price_sum, sold_at=sold_at)
+            sale = Sale(fruit=fruit_name, amount=amount, revenue=revenue, sold_at=sold_at)
             sale.save()
         else:  # 編集
             sale = Sale.objects.get(id=pk)
             sale.fruit = fruit_name
             sale.amount = amount
-            sale.price_sum = price_sum
+            sale.revenue = revenue
             sale.sold_at = sold_at
             sale.save()
 
         return super(SaleFormView, self).form_valid(form)
 
-    def culc_price_sum(self, fruit_name, amount):
+    def culc_revenue(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
-        price_sum = fruit.price * amount
-        return price_sum
+        revenue = fruit.price * amount
+        return revenue
 
 
 class SaleDeleteView(View):
@@ -114,7 +114,7 @@ class SaleStatisticsView(TemplateView):
         sale_objects_all = Sale.objects.all()
 
         for sale_object in sale_objects_all:
-            revenue_sum += sale_object.price_sum
+            revenue_sum += sale_object.revenue
 
         return revenue_sum
 
@@ -141,6 +141,6 @@ class SaleStatisticsView(TemplateView):
         revenue_of_day = 0
 
         for sales_object in sales_objects_of_day:
-            revenue_of_day += sales_object.price_sum
+            revenue_of_day += sales_object.revenue
 
         return revenue_of_day

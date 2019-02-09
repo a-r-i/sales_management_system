@@ -14,5 +14,5 @@ class Fruit(models.Model):
 class Sale(models.Model):
     fruit = models.ForeignKey(Fruit, on_delete=models.CASCADE)
     amount = models.IntegerField()
-    price_sum = models.IntegerField()  # 合計金額
+    revenue = models.IntegerField()  # 合計金額
     sold_at = models.DateTimeField()  # 販売日時
