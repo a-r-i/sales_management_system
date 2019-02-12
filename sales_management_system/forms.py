@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 import io
 
 from django import forms
@@ -28,7 +29,7 @@ class SaleImportFromCSVForm(forms.Form):
             fruit = Fruit.objects.get(name__exact=row[0])
             amount = row[1]
             revenue = row[2]
-            sold_at = row[3]
+            sold_at = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
             sale = Sale(fruit=fruit, amount=amount, revenue=revenue, sold_at=sold_at)
             self._instances.append(sale)
 
