@@ -18,7 +18,6 @@ class LoginForm(AuthenticationForm):
 
 
 class FruitForm(ModelForm):
-
     class Meta:
         model = Fruit
         fields = ('name', 'price',)
@@ -60,7 +59,6 @@ class SaleImportFromCSVForm(forms.Form):
 
 
 class SaleForm(forms.Form):
-
     fruit = forms.ModelChoiceField(Fruit.objects)
     amount = forms.IntegerField()
     sold_at = forms.DateTimeField()
