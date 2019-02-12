@@ -15,7 +15,7 @@ class FruitForm(ModelForm):
 
 
 class SaleImportFromCSVForm(forms.Form):
-    file = forms.FileField(label='アップロードファイル',)
+    file = forms.FileField()
 
     def clean_file(self):
         file = self.cleaned_data['file']

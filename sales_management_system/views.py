@@ -54,6 +54,12 @@ class SaleManagementView(FormView):
     template_name = 'sales_management_system/sale_management.html'
     success_url = '/sale-management'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        sale_objects_order_by_sold_at = Sale.objects.order_by('-sold_at')
+        context['sale_objects'] = sale_objects_order_by_sold_at
+        return context
+
     def form_valid(self, form):
         form.save()
         return redirect('/sale-management')
