@@ -3,9 +3,18 @@ from datetime import datetime
 import io
 
 from django import forms
+from django.contrib.auth.forms import AuthenticationForm
+
 from django.forms import ModelForm
 
 from .models import Fruit, Sale
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
+        for field in self.fields.values():
+            field.widget.attrs['placeholder'] = field.label
 
 
 class FruitForm(ModelForm):

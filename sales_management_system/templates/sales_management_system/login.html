@@ -1,0 +1,21 @@
+{% extends 'sales_management_system/base.html' %}
+
+{% block header %}
+    {%  include 'sales_management_system/header.html' %}
+{% endblock %}
+
+{% block pagetitle %}
+   ログイン
+{% endblock %}
+
+{% block content %}
+    <section class="section">
+     <div class="container">
+      <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">ログイン</button>
+      </form>
+     </div>
+    </section>
+{% endblock %}

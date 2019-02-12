@@ -1,29 +1,39 @@
 from datetime import datetime, timedelta
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.views import View
 from django.views.generic import TemplateView, ListView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
-from django.views import View
 
 from dateutil.relativedelta import relativedelta
 import pytz
 
-from .forms import FruitForm, SaleForm, SaleImportFromCSVForm
+from .forms import LoginForm, FruitForm, SaleForm, SaleImportFromCSVForm
 from .models import Fruit, Sale
 
 
-class TopView(TemplateView):
+class LoginView(LoginView):
+    form_class = LoginForm
+    template_name = "sales_management_system/login.html"
+
+
+class TopView(LoginRequiredMixin, TemplateView):
+    login_url = '/login'
 
     template_name = "sales_management_system/index.html"
 
 
-class FruitListView(ListView):
+class FruitListView(LoginRequiredMixin, ListView):
+    login_url = '/login'
 
     model = Fruit
     queryset = Fruit.objects.order_by('-updated_at')
 
 
-class FruitCreateView(CreateView):
+class FruitCreateView(LoginRequiredMixin, CreateView):
+    login_url = '/login'
 
     model = Fruit
     form_class = FruitForm
@@ -31,7 +41,8 @@ class FruitCreateView(CreateView):
     success_url = '/fruit-list'
 
 
-class FruitUpdateView(UpdateView):
+class FruitUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = '/login'
 
     model = Fruit
     form_class = FruitForm
@@ -39,7 +50,8 @@ class FruitUpdateView(UpdateView):
     success_url = '/fruit-list'
 
 
-class FruitDeleteView(View):
+class FruitDeleteView(LoginRequiredMixin, View):
+    login_url = '/login'
 
     def get(self, request, pk):
         fruit = Fruit.objects.get(id=pk)
@@ -47,7 +59,8 @@ class FruitDeleteView(View):
         return redirect('fruit_list')
 
 
-class SaleManagementView(FormView):
+class SaleManagementView(LoginRequiredMixin, FormView):
+    login_url = '/login'
 
     model = Sale
     form_class = SaleImportFromCSVForm
@@ -65,7 +78,8 @@ class SaleManagementView(FormView):
         return redirect('/sale-management')
 
 
-class SaleFormView(FormView):
+class SaleFormView(LoginRequiredMixin, FormView):
+    login_url = '/login'
 
     model = Sale
     form_class = SaleForm
@@ -101,7 +115,8 @@ class SaleFormView(FormView):
         return revenue
 
 
-class SaleDeleteView(View):
+class SaleDeleteView(LoginRequiredMixin, View):
+    login_url = '/login'
 
     def get(self, request, pk):
         sale = Sale.objects.get(id=pk)
@@ -109,7 +124,8 @@ class SaleDeleteView(View):
         return redirect('sale_list')
 
 
-class SaleStatisticsView(TemplateView):
+class SaleStatisticsView(LoginRequiredMixin, TemplateView):
+    login_url = '/login'
 
     template_name = "sales_management_system/sale_statistics.html"
 
