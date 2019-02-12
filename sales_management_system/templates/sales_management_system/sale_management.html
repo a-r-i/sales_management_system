@@ -1,0 +1,79 @@
+<form action="" method="POST" enctype="multipart/form-data">
+  {{ form.as_ul }}
+  {% csrf_token %}
+  <button type="submit">送信</button>
+</form>
+
+{#{% extends 'sales_management_system/base_breadcrumb.html' %}#}
+{##}
+{#{% block header %}#}
+{#    {%  include 'sales_management_system/header.html' %}#}
+{#{% endblock %}#}
+{##}
+{#{% block pagetitle %}#}
+{#    販売情報管理#}
+{#{% endblock %}#}
+{##}
+{#{% block breadcrumb-li %}#}
+{#   <li class="is-active"><a href="#" aria-current="page">販売情報管理</a></li>#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block content %}#}
+{#    <section class="section">#}
+{#     <div class="container">#}
+{#      <table class="table is-bordered is-striped is-fullwidth">#}
+{#       <thead>#}
+{#        <tr>#}
+{#         <th>果物</th>#}
+{#         <th>個数</th>#}
+{#         <th>売り上げ</th>#}
+{#         <th>販売日時</th>#}
+{#         <th></th>#}
+{#         <th></th>#}
+{#        </tr>#}
+{#       </thead>#}
+{#       <tbody>#}
+{#           {% for object in object_list %}#}
+{#                <tr>#}
+{#                 <th>{{ object.fruit }}</th>#}
+{#                 <td>{{ object.amount }}</td>#}
+{#                 <td>{{ object.revenue }}</td>#}
+{#                 <td>{{ object.sold_at }}</td>#}
+{#                 <td><a href="./sale-form/{{ object.id }}">編集</a></td>#}
+{#                 <td><a href="./delete-sale/{{ object.id }}">削除</a></td>#}
+{#                </tr>#}
+{#           {% endfor %}#}
+{#       </tbody>#}
+{#      </table>#}
+{#     </div>#}
+{#    </section>#}
+{#    <section>#}
+{#     <div class="container">#}
+{#      <a class="button is-large is-fullwidth" href="./sale-form">販売情報登録</a>#}
+{#     </div>#}
+{#    </section>#}
+{#    <section>#}
+{#     <div class="container">#}
+{#        <form action="" method="POST" enctype="multipart/form-data">#}
+{#          {% csrf_token %}#}
+{#          <div class="field">#}
+{#           <div class="file is-large is-boxed">#}
+{#             <label class="file-label">#}
+{#               <input class="file-input" type="file" name="resume">#}
+{#               <span class="file-cta">#}
+{#                 <span class="file-icon">#}
+{#                   <i class="fas fa-upload"></i>#}
+{#                 </span>#}
+{#                 <span class="file-label">#}
+{#                   CSVファイル選択#}
+{#                 </span>#}
+{#               </span>#}
+{#             </label>#}
+{#           </div>#}
+{#          <button type="submit" class="button is-large is-fullwidth">CSVアップロード</button>#}
+{#         </div>#}
+{#        </form>#}
+{#      </div>#}
+{#    </section>#}
+{#{% endblock %}#}

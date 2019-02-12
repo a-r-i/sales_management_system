@@ -8,7 +8,7 @@ from django.views import View
 from dateutil.relativedelta import relativedelta
 import pytz
 
-from .forms import FruitForm, SaleForm
+from .forms import FruitForm, SaleForm, SaleImportFromCSVForm
 from .models import Fruit, Sale
 
 
@@ -47,10 +47,16 @@ class FruitDeleteView(View):
         return redirect('fruit_list')
 
 
-class SaleListView(ListView):
+class SaleManagementView(FormView):
 
     model = Sale
-    queryset = Sale.objects.order_by('-sold_at')
+    form_class = SaleImportFromCSVForm
+    template_name = 'sales_management_system/sale_management.html'
+    success_url = '/sale-management'
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('/sale-management')
 
 
 class SaleFormView(FormView):
@@ -61,6 +67,7 @@ class SaleFormView(FormView):
     success_url = '/sale-list'
 
     def form_valid(self, form):
+        # SaleFormに実装すべき処理？
         fruit_name = form.cleaned_data['fruit']
         amount = form.cleaned_data['amount']
         revenue = self.calclate_revenue(fruit_name, amount)
