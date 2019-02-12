@@ -25,6 +25,7 @@ class SaleImportFromCSVForm(forms.Form):
 
         self._instances = []
 
+        # 別のメソッドに切り分ける？
         for row in reader:
             try:
                 fruit = Fruit.objects.get(name__exact=row[0])
