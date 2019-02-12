@@ -26,12 +26,16 @@ class SaleImportFromCSVForm(forms.Form):
         self._instances = []
 
         for row in reader:
-            fruit = Fruit.objects.get(name__exact=row[0])
-            amount = row[1]
-            revenue = row[2]
-            sold_at = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
-            sale = Sale(fruit=fruit, amount=amount, revenue=revenue, sold_at=sold_at)
-            self._instances.append(sale)
+            try:
+                fruit = Fruit.objects.get(name__exact=row[0])
+            except Fruit.DoesNotExist:
+                print('Fruit.DoesNotExist')
+            else:
+                amount = row[1]
+                revenue = row[2]
+                sold_at = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
+                sale = Sale(fruit=fruit, amount=amount, revenue=revenue, sold_at=sold_at)
+                self._instances.append(sale)
 
     def save(self):
         for sale in self._instances:
