@@ -33,13 +33,20 @@ class SaleImportFromCSVForm(forms.Form):
             else:
                 amount = row[1]
                 revenue = row[2]
-                sold_at = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
-                sale = Sale(fruit=fruit, amount=amount, revenue=revenue, sold_at=sold_at)
-                self._instances.append(sale)
+                try:
+                    sold_at = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
+                except ValueError:
+                    print('ValueError')
+                else:
+                    sale = Sale(fruit=fruit, amount=amount, revenue=revenue, sold_at=sold_at)
+                    self._instances.append(sale)
 
     def save(self):
         for sale in self._instances:
-            sale.save()
+            try:
+                sale.save()
+            except ValueError:
+                print('ValueError')
 
 
 class SaleForm(forms.Form):
