@@ -84,7 +84,7 @@ class SaleFormView(LoginRequiredMixin, FormView):
     model = Sale
     form_class = SaleForm
     template_name = 'sales_management_system/sale_form.html'
-    success_url = '/sale-list/'
+    success_url = '/sale_management/'
 
     def form_valid(self, form):
         # SaleFormに実装すべき処理？
@@ -121,7 +121,7 @@ class SaleDeleteView(LoginRequiredMixin, View):
     def get(self, request, pk):
         sale = Sale.objects.get(id=pk)
         sale.delete()
-        return redirect('sale_list')
+        return redirect('sale_management')
 
 
 class SaleStatisticsView(LoginRequiredMixin, TemplateView):
