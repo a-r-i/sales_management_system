@@ -62,3 +62,27 @@ class SaleForm(forms.Form):
     fruit = forms.ModelChoiceField(Fruit.objects)
     amount = forms.IntegerField()
     sold_at = forms.DateTimeField()
+    
+    def clean(self):
+        self.fruit_name = self.cleaned_data['fruit']
+        self.amount = self.cleaned_data['amount']
+        self.revenue = self.calclate_revenue(self.fruit_name, self.amount)
+        self.sold_at = self.cleaned_data['sold_at']
+
+    def calclate_revenue(self, fruit_name, amount):
+        fruit = Fruit.objects.get(name__exact=fruit_name)
+        revenue = fruit.price * amount
+        return revenue
+
+    def save(self, pk):
+        # 新規登録と編集で処理を分ける
+        if pk:  # 編集
+            sale = Sale.objects.get(id=pk)
+            sale.fruit = self.fruit_name
+            sale.amount = self.amount
+            sale.revenue = self.revenue
+            sale.sold_at = self.sold_at
+            sale.save()
+        else:  # 新規登録
+            sale = Sale(fruit=self.fruit_name, amount=self.amount, revenue=self.revenue, sold_at=self.sold_at)
+            sale.save()

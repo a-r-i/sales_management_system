@@ -90,32 +90,15 @@ class SaleFormView(LoginRequiredMixin, FormView):
     success_url = '/sale-management/'
 
     def form_valid(self, form):
-        # SaleFormに実装すべき処理？
-        fruit_name = form.cleaned_data['fruit']
-        amount = form.cleaned_data['amount']
-        revenue = self.calclate_revenue(fruit_name, amount)
-        sold_at = form.cleaned_data['sold_at']
+        pk = None
 
-        # 新規登録と編集で処理を分ける
         try:
             pk = self.kwargs['pk']
-        except KeyError:  # 新規登録
-            sale = Sale(fruit=fruit_name, amount=amount, revenue=revenue, sold_at=sold_at)
-            sale.save()
-        else:  # 編集
-            sale = Sale.objects.get(id=pk)
-            sale.fruit = fruit_name
-            sale.amount = amount
-            sale.revenue = revenue
-            sale.sold_at = sold_at
-            sale.save()
+        except KeyError:
+            print('KeyError')
 
-        return super(SaleFormView, self).form_valid(form)
-
-    def calclate_revenue(self, fruit_name, amount):
-        fruit = Fruit.objects.get(name__exact=fruit_name)
-        revenue = fruit.price * amount
-        return revenue
+        form.save(pk)
+        return redirect('/sale-management/')
 
 
 class SaleDeleteView(LoginRequiredMixin, View):
