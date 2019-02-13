@@ -6,8 +6,8 @@ import pytz
 from .models import Sale
 
 
-def aggregate_sales_infomation(date_type, number):
-    sales_infomation = []
+def aggregate_sales_information(date_type, number):
+    sales_information = []
 
     now = datetime.now(pytz.timezone('Asia/Tokyo'))
     today = now.date()
@@ -21,15 +21,15 @@ def aggregate_sales_infomation(date_type, number):
             sale_objects = Sale.objects.filter(sold_at__range=[first_day_aggregate_month, last_day_aggregate_month])
             revenue = aggregate_revenue(sale_objects)
             detail = aggregate_detail(sale_objects)
-            sales_infomation.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
+            sales_information.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
         elif date_type == 'day':
             aggregate_date = today + timedelta(days=-i)
             sale_objects = Sale.objects.filter(sold_at__date=aggregate_date)
             revenue = aggregate_revenue(sale_objects)
             detail = aggregate_detail(sale_objects)
-            sales_infomation.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
+            sales_information.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
 
-    return sales_infomation
+    return sales_information
 
 
 def aggregate_revenue(sale_objects):

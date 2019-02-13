@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 
 from .forms import LoginForm, FruitForm, SaleForm, SaleImportFromCSVForm
 from .models import Fruit, Sale
-from .services import aggregate_sales_infomation, aggregate_revenue, aggregate_detail
+from .services import aggregate_sales_information, aggregate_revenue, aggregate_detail
 
 
 class Login(LoginView):
@@ -138,6 +138,6 @@ class SaleStatisticsView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         sale_objects_all = Sale.objects.all()
         context['total_revenue'] = aggregate_revenue(sale_objects_all)
-        context['last3months_sales_infomation'] = aggregate_sales_infomation('month', 3)
-        context['last3days_sales_infomation'] = aggregate_sales_infomation('day', 3)
+        context['last3months_sales_information'] = aggregate_sales_information('month', 3)
+        context['last3days_sales_information'] = aggregate_sales_information('day', 3)
         return context

@@ -31,11 +31,11 @@
         </tr>
        </thead>
        <tbody>
-           {% for monthly_sales_infomation in last3months_sales_infomation %}
+           {% for monthly_sales_information in last3months_sales_information %}
                 <tr>
-                 <th>{{ monthly_sales_infomation.date }}</th>
-                 <td>{{ monthly_sales_infomation.revenue }}円</td>
-                 <td>{{ monthly_sales_infomation.detail }}</td>
+                 <th>{{ monthly_sales_information.date }}</th>
+                 <td>{{ monthly_sales_information.revenue }}円</td>
+                 <td>{{ monthly_sales_information.detail }}</td>
                 </tr>
            {% endfor %}
        </tbody>
@@ -54,11 +54,11 @@
         </tr>
        </thead>
        <tbody>
-           {% for daily_sales_infomation in last3days_sales_infomation %}
+           {% for daily_sales_information in last3days_sales_information %}
                 <tr>
-                 <th>{{ daily_sales_infomation.date }}</th>
-                 <td>{{ daily_sales_infomation.revenue }}円</td>
-                 <td>{{ daily_sales_infomation.detail }}</td>
+                 <th>{{ daily_sales_information.date }}</th>
+                 <td>{{ daily_sales_information.revenue }}円</td>
+                 <td>{{ daily_sales_information.detail }}</td>
                 </tr>
            {% endfor %}
        </tbody>
