@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.views import View
@@ -7,11 +5,9 @@ from django.views.generic import TemplateView, ListView, FormView
 from django.views.generic.edit import CreateView, UpdateView
 from django.shortcuts import redirect
 
-from dateutil.relativedelta import relativedelta
-import pytz
-
 from .forms import LoginForm, FruitForm, SaleForm, SaleImportFromCSVForm
 from .models import Fruit, Sale
+from .services import aggregate_sales_infomation, aggregate_revenue, aggregate_detail
 
 
 class Login(LoginView):
@@ -141,60 +137,7 @@ class SaleStatisticsView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         sale_objects_all = Sale.objects.all()
-        context['total_revenue'] = self.aggregate_revenue(sale_objects_all)
-        context['last3months_sales_infomation'] = self.aggregate_sales_infomation('month', 3)
-        context['last3days_sales_infomation'] = self.aggregate_sales_infomation('day', 3)
+        context['total_revenue'] = aggregate_revenue(sale_objects_all)
+        context['last3months_sales_infomation'] = aggregate_sales_infomation('month', 3)
+        context['last3days_sales_infomation'] = aggregate_sales_infomation('day', 3)
         return context
-
-    def aggregate_sales_infomation(self, date_type, number):
-        sales_infomation = []
-
-        now = datetime.now(pytz.timezone('Asia/Tokyo'))
-        today = now.date()
-
-        for i in range(1, number+1):
-            if date_type == 'month':
-                today_aggregate_month = today + relativedelta(months=-i)
-                first_day_aggregate_month = today_aggregate_month.replace(day=1)
-                last_day_aggregate_month = first_day_aggregate_month + relativedelta(months=1, days=-1)
-                aggregate_date = '%i年%i月' % (first_day_aggregate_month.year, first_day_aggregate_month.month)
-                sale_objects = Sale.objects.filter(sold_at__range=[first_day_aggregate_month, last_day_aggregate_month])
-                revenue = self.aggregate_revenue(sale_objects)
-                detail = self.aggregate_detail(sale_objects)
-                sales_infomation.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
-            elif date_type == 'day':
-                aggregate_date = today + timedelta(days=-i)
-                sale_objects = Sale.objects.filter(sold_at__date=aggregate_date)
-                revenue = self.aggregate_revenue(sale_objects)
-                detail = self.aggregate_detail(sale_objects)
-                sales_infomation.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
-
-        return sales_infomation
-
-    def aggregate_revenue(self, sale_objects):
-        total_revenue = 0
-
-        for object in sale_objects:
-            total_revenue += object.revenue
-
-        return total_revenue
-
-    def aggregate_detail(self, sales_objects):
-        daily_detail_dict = {}
-
-        for object in sales_objects:
-            fruit_name = str(object.fruit)
-            if fruit_name in daily_detail_dict.keys():
-                daily_detail_dict[fruit_name]['revenue'] += object.revenue
-                daily_detail_dict[fruit_name]['amount'] += object.amount
-            else:
-                daily_detail_dict[fruit_name] = {}
-                daily_detail_dict[fruit_name]['revenue'] = object.revenue
-                daily_detail_dict[fruit_name]['amount'] = object.amount
-
-        daily_detail = ''
-
-        for key, value in daily_detail_dict.items():
-            daily_detail += '%s:%i円(%i)' % (key, value['revenue'], value['amount'])
-
-        return daily_detail
