@@ -47,7 +47,12 @@ class SaleImportFromCSVForm(forms.Form):
                 except ValueError:
                     print('ValueError')
                 else:
-                    sale = Sale(fruit=fruit, amount=amount, revenue=revenue, sold_at=sold_at)
+                    sale = Sale(
+                                fruit=fruit,
+                                amount=amount,
+                                revenue=revenue,
+                                sold_at=sold_at
+                                )
                     self._instances.append(sale)
 
     def save(self):
@@ -84,5 +89,10 @@ class SaleForm(forms.Form):
             sale.sold_at = self.sold_at
             sale.save()
         else:  # 新規登録
-            sale = Sale(fruit=self.fruit_name, amount=self.amount, revenue=self.revenue, sold_at=self.sold_at)
+            sale = Sale(
+                        fruit=self.fruit_name,
+                        amount=self.amount,
+                        revenue=self.revenue,
+                        sold_at=self.sold_at
+                        )
             sale.save()
