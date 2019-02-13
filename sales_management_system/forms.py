@@ -31,7 +31,7 @@ class SaleImportFromCSVForm(forms.Form):
         csv_file = io.TextIOWrapper(file, encoding='utf-8')
         reader = csv.reader(csv_file)
 
-        self._instances = []
+        self.sale_array = []
 
         # 別のメソッドに切り分ける？
         for row in reader:
@@ -53,10 +53,10 @@ class SaleImportFromCSVForm(forms.Form):
                                 revenue=revenue,
                                 sold_at=sold_at
                                 )
-                    self._instances.append(sale)
+                    self.sale_array.append(sale)
 
     def save(self):
-        for sale in self._instances:
+        for sale in self.sale_array:
             try:
                 sale.save()
             except ValueError:
