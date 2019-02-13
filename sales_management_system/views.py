@@ -21,12 +21,14 @@ class LoginView(LoginView):
 
 class TopView(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     template_name = "sales_management_system/index.html"
 
 
 class FruitListView(LoginRequiredMixin, ListView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     model = Fruit
     queryset = Fruit.objects.order_by('-updated_at')
@@ -34,6 +36,7 @@ class FruitListView(LoginRequiredMixin, ListView):
 
 class FruitCreateView(LoginRequiredMixin, CreateView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     model = Fruit
     form_class = FruitForm
@@ -43,6 +46,7 @@ class FruitCreateView(LoginRequiredMixin, CreateView):
 
 class FruitUpdateView(LoginRequiredMixin, UpdateView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     model = Fruit
     form_class = FruitForm
@@ -52,6 +56,7 @@ class FruitUpdateView(LoginRequiredMixin, UpdateView):
 
 class FruitDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     def get(self, request, pk):
         fruit = Fruit.objects.get(id=pk)
@@ -61,6 +66,7 @@ class FruitDeleteView(LoginRequiredMixin, View):
 
 class SaleManagementView(LoginRequiredMixin, FormView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     model = Sale
     form_class = SaleImportFromCSVForm
@@ -80,6 +86,7 @@ class SaleManagementView(LoginRequiredMixin, FormView):
 
 class SaleFormView(LoginRequiredMixin, FormView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     model = Sale
     form_class = SaleForm
@@ -117,6 +124,7 @@ class SaleFormView(LoginRequiredMixin, FormView):
 
 class SaleDeleteView(LoginRequiredMixin, View):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     def get(self, request, pk):
         sale = Sale.objects.get(id=pk)
@@ -126,6 +134,7 @@ class SaleDeleteView(LoginRequiredMixin, View):
 
 class SaleStatisticsView(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
     template_name = "sales_management_system/sale_statistics.html"
 
