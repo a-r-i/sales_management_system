@@ -174,8 +174,8 @@ class SaleStatisticsView(LoginRequiredMixin, TemplateView):
     def aggregate_revenue(self, sale_objects):
         total_revenue = 0
 
-        for sale_object in sale_objects:
-            total_revenue += sale_object.revenue
+        for object in sale_objects:
+            total_revenue += object.revenue
 
         return total_revenue
 
