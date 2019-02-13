@@ -14,7 +14,7 @@ from .forms import LoginForm, FruitForm, SaleForm, SaleImportFromCSVForm
 from .models import Fruit, Sale
 
 
-class LoginView(LoginView):
+class Login(LoginView):
     form_class = LoginForm
     template_name = "sales_management_system/login.html"
 
