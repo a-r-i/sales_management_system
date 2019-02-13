@@ -28,14 +28,14 @@
         </tr>
        </thead>
        <tbody>
-           {% for object in sale_objects %}
+           {% for obj in sale_objects %}
                 <tr>
-                 <th>{{ object.fruit }}</th>
-                 <td>{{ object.amount }}</td>
-                 <td>{{ object.revenue }}</td>
-                 <td>{{ object.sold_at }}</td>
-                 <td><a href="../sale-form/{{ object.id }}/">編集</a></td>
-                 <td><a href="../delete-sale/{{ object.id }}/">削除</a></td>
+                 <th>{{ obj.fruit }}</th>
+                 <td>{{ obj.amount }}</td>
+                 <td>{{ obj.revenue }}</td>
+                 <td>{{ obj.sold_at }}</td>
+                 <td><a href="../sale-form/{{ obj.id }}/">編集</a></td>
+                 <td><a href="../delete-sale/{{ obj.id }}/">削除</a></td>
                 </tr>
            {% endfor %}
        </tbody>

@@ -28,15 +28,15 @@
         </tr>
        </thead>
        <tbody>
-           {% for object in object_list %}
+           {% for obj in object_list %}
                 <tr>
-                 <th>{{ object.id }}</th>
-                 <td>{{ object.name }}</td>
-                 <td>{{ object.price }}</td>
-                 <td>{{ object.created_at }}</td>
-                 <td>{{ object.updated_at }}</td>
-                 <td><a href="../update-fruit/{{ object.id }}/">編集</a></td>
-                 <td><a href="../delete-fruit/{{ object.id }}/">削除</a></td>
+                 <th>{{ obj.id }}</th>
+                 <td>{{ obj.name }}</td>
+                 <td>{{ obj.price }}</td>
+                 <td>{{ obj.created_at }}</td>
+                 <td>{{ obj.updated_at }}</td>
+                 <td><a href="../update-fruit/{{ obj.id }}/">編集</a></td>
+                 <td><a href="../delete-fruit/{{ obj.id }}/">削除</a></td>
                 </tr>
            {% endfor %}
        </tbody>

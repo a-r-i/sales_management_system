@@ -35,8 +35,8 @@ def aggregate_sales_infomation(date_type, number):
 def aggregate_revenue(sale_objects):
     total_revenue = 0
 
-    for object in sale_objects:
-        total_revenue += object.revenue
+    for obj in sale_objects:
+        total_revenue += obj.revenue
 
     return total_revenue
 
@@ -44,15 +44,15 @@ def aggregate_revenue(sale_objects):
 def aggregate_detail(sales_objects):
     daily_detail_dict = {}
 
-    for object in sales_objects:
-        fruit_name = str(object.fruit)
+    for obj in sales_objects:
+        fruit_name = str(obj.fruit)
         if fruit_name in daily_detail_dict.keys():
-            daily_detail_dict[fruit_name]['revenue'] += object.revenue
-            daily_detail_dict[fruit_name]['amount'] += object.amount
+            daily_detail_dict[fruit_name]['revenue'] += obj.revenue
+            daily_detail_dict[fruit_name]['amount'] += obj.amount
         else:
             daily_detail_dict[fruit_name] = {}
-            daily_detail_dict[fruit_name]['revenue'] = object.revenue
-            daily_detail_dict[fruit_name]['amount'] = object.amount
+            daily_detail_dict[fruit_name]['revenue'] = obj.revenue
+            daily_detail_dict[fruit_name]['amount'] = obj.amount
 
     daily_detail = ''
 
