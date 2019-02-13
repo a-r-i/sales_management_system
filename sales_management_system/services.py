@@ -6,6 +6,15 @@ import pytz
 from .models import Sale
 
 
+def aggregate_revenue(sale_objects):
+    total_revenue = 0
+
+    for obj in sale_objects:
+        total_revenue += obj.revenue
+
+    return total_revenue
+
+
 def aggregate_sales_information(date_type, number):
     sales_information = []
 
@@ -32,19 +41,10 @@ def aggregate_sales_information(date_type, number):
     return sales_information
 
 
-def aggregate_revenue(sale_objects):
-    total_revenue = 0
-
-    for obj in sale_objects:
-        total_revenue += obj.revenue
-
-    return total_revenue
-
-
-def aggregate_detail(sales_objects):
+def aggregate_detail(sale_objects):
     daily_detail_dict = {}
 
-    for obj in sales_objects:
+    for obj in sale_objects:
         fruit_name = str(obj.fruit)
         if fruit_name in daily_detail_dict.keys():
             daily_detail_dict[fruit_name]['revenue'] += obj.revenue
