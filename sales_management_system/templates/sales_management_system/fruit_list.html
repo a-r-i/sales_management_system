@@ -22,6 +22,7 @@
          <th>名称</th>
          <th>単価</th>
          <th>登録日時</th>
+         <th>更新日時</th>
          <th></th>
          <th></th>
         </tr>
@@ -33,6 +34,7 @@
                  <td>{{ object.name }}</td>
                  <td>{{ object.price }}</td>
                  <td>{{ object.created_at }}</td>
+                 <td>{{ object.updated_at }}</td>
                  <td><a href="../update-fruit/{{ object.id }}/">編集</a></td>
                  <td><a href="../delete-fruit/{{ object.id }}/">削除</a></td>
                 </tr>

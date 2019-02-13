@@ -91,7 +91,7 @@ class SaleFormView(LoginRequiredMixin, FormView):
     model = Sale
     form_class = SaleForm
     template_name = 'sales_management_system/sale_form.html'
-    success_url = '/sale_management/'
+    success_url = '/sale-management/'
 
     def form_valid(self, form):
         # SaleFormに実装すべき処理？
