@@ -12,14 +12,14 @@ from .services import aggregate_sales_information, aggregate_revenue, aggregate_
 
 class Login(LoginView):
     form_class = LoginForm
-    template_name = "sales_management_system/login.html"
+    template_name = 'sales_management_system/login.html'
 
 
 class TopView(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
-    template_name = "sales_management_system/index.html"
+    template_name = 'sales_management_system/index.html'
 
 
 class FruitListView(LoginRequiredMixin, ListView):
@@ -115,7 +115,7 @@ class SaleStatisticsView(LoginRequiredMixin, TemplateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
-    template_name = "sales_management_system/sale_statistics.html"
+    template_name = 'sales_management_system/sale_statistics.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
