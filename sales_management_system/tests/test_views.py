@@ -17,6 +17,7 @@ class TestIndexView(TestCase):
                                  last_name='test',
                                  first_name='user')
 
+    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
         response = self.client.get('/')
         self.assertRedirects(response, '/login/?redirect_to=/', status_code=302,
