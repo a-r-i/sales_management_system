@@ -32,13 +32,13 @@ def aggregate_sales_information(date_type, number):
                                                                                last_day_aggregate_month
                                                                                ])
 
-            aggregate_date = '%i年%i月' % (first_day_aggregate_month.year, first_day_aggregate_month.month)
+            aggregate_date = '%i年%i月' % (this_day_aggregate_month.year, this_day_aggregate_month.month)  # 統計を取る年月
             revenue = aggregate_revenue(sale_objects_aggregate_month)
             detail = aggregate_detail(sale_objects_aggregate_month)
 
             sales_information.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
         elif date_type == 'day':
-            aggregate_date = today + timedelta(days=-i)  # 統計を取る日付
+            aggregate_date = today + timedelta(days=-i)  # 統計を取る年月日
 
             sale_objects_aggregate_date = Sale.objects.filter(sold_at__date=aggregate_date)
 
@@ -53,7 +53,7 @@ def aggregate_sales_information(date_type, number):
 def aggregate_detail(sale_objects):
     detail_dict = {}
 
-    # 「同じ果物の販売情報」をひとつに合算し、以下のような二次元辞書をつくる
+    # 「同じ果物の販売情報」をひとつに合算し、以下の形式の二次元辞書をつくる
     # {'ブルーベリー': {'revenue': 200, 'amount': 4}, 'メロン': {'revenue': 20200, 'amount': 8}}
     for obj in sale_objects:
         fruit_name = str(obj.fruit)
