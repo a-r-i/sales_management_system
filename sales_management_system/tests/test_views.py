@@ -13,9 +13,10 @@ class TestLogin(TestCase):
         self.assertTemplateUsed(response, 'sales_management_system/login.html')
 
     def test_login(self):
+        """
+           ユーザ名・パスワードが正しい場合はログインしTopページへ飛ばすことを検証
+        """
         response = self.client.post('/login/', self.credentials, follow=True)
-
-        # ユーザ名・パスワードが正しい場合はログインしTopページへ飛ばす
         self.assertTrue(response.context['user'].is_active)
         self.assertRedirects(response, '/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -26,8 +27,10 @@ class TestTopView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/')
         self.assertRedirects(response, '/login/?redirect_to=/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -44,8 +47,10 @@ class TestFruitListView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/fruit-list/')
         self.assertRedirects(response, '/login/?redirect_to=/fruit-list/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -62,8 +67,10 @@ class TestFruitCreateView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/create-fruit/')
         self.assertRedirects(response, '/login/?redirect_to=/create-fruit/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -82,8 +89,10 @@ class TestFruitUpdateView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/update-fruit/1/')
         self.assertRedirects(response, '/login/?redirect_to=/update-fruit/1/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -102,8 +111,10 @@ class TestFruitDeleteView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/delete-fruit/1/')
         self.assertRedirects(response, '/login/?redirect_to=/delete-fruit/1/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -120,8 +131,10 @@ class TestSaleManagementView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/sale-management/')
         self.assertRedirects(response, '/login/?redirect_to=/sale-management/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -140,8 +153,10 @@ class TestSaleFormView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/sale-form/')
         self.assertRedirects(response, '/login/?redirect_to=/sale-form/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -166,8 +181,10 @@ class TestSaleDeleteView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/delete-sale/1/')
         self.assertRedirects(response, '/login/?redirect_to=/delete-sale/1/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
@@ -184,8 +201,10 @@ class TestSaleStatisticsView(TestCase):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
 
-    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
     def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
         response = self.client.get('/sale-statistics/')
         self.assertRedirects(response, '/login/?redirect_to=/sale-statistics/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
