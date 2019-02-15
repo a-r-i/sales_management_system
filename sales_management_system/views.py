@@ -80,7 +80,7 @@ class SaleManagementView(LoginRequiredMixin, FormView):
         return redirect('/sale-management/')
 
 
-class SaleFormView(LoginRequiredMixin, FormView):
+class SaleCreateView(LoginRequiredMixin, CreateView):
     login_url = '/login/'
     redirect_field_name = 'redirect_to'
 
@@ -89,16 +89,15 @@ class SaleFormView(LoginRequiredMixin, FormView):
     template_name = 'sales_management_system/sale_form.html'
     success_url = '/sale-management/'
 
-    def form_valid(self, form):
-        pk = None
 
-        try:
-            pk = self.kwargs['pk']
-        except KeyError:
-            print('KeyError')
+class SaleUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = '/login/'
+    redirect_field_name = 'redirect_to'
 
-        form.save(pk)
-        return redirect('/sale-management/')
+    model = Sale
+    form_class = SaleForm
+    template_name = 'sales_management_system/sale_form.html'
+    success_url = '/sale-management/'
 
 
 class SaleDeleteView(LoginRequiredMixin, View):

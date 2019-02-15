@@ -34,7 +34,7 @@
                  <td>{{ obj.amount }}</td>
                  <td>{{ obj.revenue }}</td>
                  <td>{{ obj.sold_at }}</td>
-                 <td><a href="../sale-form/{{ obj.id }}/">編集</a></td>
+                 <td><a href="../update-sale/{{ obj.id }}/">編集</a></td>
                  <td><a href="../delete-sale/{{ obj.id }}/">削除</a></td>
                 </tr>
            {% endfor %}
@@ -44,7 +44,7 @@
     </section>
     <section>
      <div class="container">
-      <a class="button is-large is-fullwidth" href="../sale-form/">販売情報登録</a>
+      <a class="button is-large is-fullwidth" href="../create-sale/">販売情報登録</a>
      </div>
     </section>
     <section class="hero is-info">
