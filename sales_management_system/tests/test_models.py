@@ -7,7 +7,7 @@ from ..models import Fruit, Sale
 class TestFruit(TestCase):
     fixtures = ['test_models.json']
 
-    def test_delete_fruit_get(self):
+    def test_delete_fruit(self):
         """
             削除リンクを押すと、対象の果物は削除されることを検証
         """
@@ -29,7 +29,7 @@ class TestFruit(TestCase):
 class TestSale(TestCase):
     fixtures = ['test_models.json']
 
-    def test_delete_sale_get(self):
+    def test_delete_sale(self):
         """
             削除リンクを押すと、対象の果物は削除されることを検証
         """

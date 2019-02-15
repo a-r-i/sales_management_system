@@ -70,9 +70,18 @@ class SaleForm(forms.Form):
     
     def clean(self):
         self.fruit_name = self.cleaned_data['fruit']
-        self.amount = self.cleaned_data['amount']
+
+        try:
+            self.amount = self.cleaned_data['amount']
+        except KeyError:
+            return False
+
         self.revenue = self.calclate_revenue(self.fruit_name, self.amount)
-        self.sold_at = self.cleaned_data['sold_at']
+
+        try:
+            self.sold_at = self.cleaned_data['sold_at']
+        except KeyError:
+            return False
 
     def calclate_revenue(self, fruit_name, amount):
         fruit = Fruit.objects.get(name__exact=fruit_name)
