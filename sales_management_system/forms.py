@@ -23,6 +23,12 @@ class FruitForm(ModelForm):
         fields = ('name', 'price',)
 
 
+class SaleForm(ModelForm):
+    class Meta:
+        model = Sale
+        fields = ('fruit', 'amount', 'sold_at')
+
+
 class SaleImportFromCSVForm(forms.Form):
     file = forms.FileField()
 
@@ -61,47 +67,3 @@ class SaleImportFromCSVForm(forms.Form):
                 sale.save()
             except ValueError:
                 print('ValueError')
-
-
-class SaleForm(forms.Form):
-    fruit = forms.ModelChoiceField(Fruit.objects)
-    amount = forms.IntegerField()
-    sold_at = forms.DateTimeField()
-    
-    def clean(self):
-        self.fruit_name = self.cleaned_data['fruit']
-
-        try:
-            self.amount = self.cleaned_data['amount']
-        except KeyError:
-            return False
-
-        self.revenue = self.calclate_revenue(self.fruit_name, self.amount)
-
-        try:
-            self.sold_at = self.cleaned_data['sold_at']
-        except KeyError:
-            return False
-
-    def calclate_revenue(self, fruit_name, amount):
-        fruit = Fruit.objects.get(name__exact=fruit_name)
-        revenue = fruit.price * amount
-        return revenue
-
-    def save(self, pk):
-        # 新規登録と編集で処理を分ける
-        if pk:  # 編集
-            sale = Sale.objects.get(id=pk)
-            sale.fruit = self.fruit_name
-            sale.amount = self.amount
-            sale.revenue = self.revenue
-            sale.sold_at = self.sold_at
-            sale.save()
-        else:  # 新規登録
-            sale = Sale(
-                        fruit=self.fruit_name,
-                        amount=self.amount,
-                        revenue=self.revenue,
-                        sold_at=self.sold_at
-                        )
-            sale.save()
