@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+from ..models import Fruit, Sale
+
 
 class TestLogin(TestCase):
     def setUp(self):
@@ -124,6 +126,24 @@ class TestFruitDeleteView(TestCase):
         response = self.client.get('/delete-fruit/1/')
         self.assertRedirects(response, '/fruit-list/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
+    
+    def test_get_delete(self):
+        """
+            削除リンクを押すと、対象の果物が削除されることを検証
+        """
+        self.client.login(**self.credentials)
+
+        pk = 1
+
+        # 事前状態の検証
+        fruit_count = Fruit.objects.filter(pk=pk).count()
+        self.assertEqual(fruit_count, 1)
+
+        self.client.get('/delete-fruit/%i/' % pk)
+
+        # 事後状態の検証
+        fruit_count = Fruit.objects.filter(pk=pk).count()
+        self.assertEqual(fruit_count, 0)
 
 
 class TestSaleManagementView(TestCase):
@@ -208,6 +228,24 @@ class TestSaleDeleteView(TestCase):
         response = self.client.get('/delete-sale/1/')
         self.assertRedirects(response, '/sale-management/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
+
+    def test_get_delete(self):
+        """
+            削除リンクを押すと、対象の販売情報が削除されることを検証
+        """
+        self.client.login(**self.credentials)
+
+        pk = 1
+
+        # 事前状態の検証
+        sale_count = Sale.objects.filter(pk=pk).count()
+        self.assertEqual(sale_count, 1)
+
+        self.client.get('/delete-sale/%i/' % pk)
+
+        # 事後状態の検証
+        sale_count = Sale.objects.filter(pk=pk).count()
+        self.assertEqual(sale_count, 0)
 
 
 class TestSaleStatisticsView(TestCase):
