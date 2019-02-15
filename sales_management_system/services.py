@@ -23,22 +23,27 @@ def aggregate_sales_information(date_type, number):
 
     for i in range(1, number + 1):
         if date_type == 'month':
-            this_day_aggregate_month = today + relativedelta(months=-i)  # 統計を取る月の今日
-            first_day_aggregate_month = this_day_aggregate_month.replace(day=1)  # 統計を取る月の1日
-            last_day_aggregate_month = first_day_aggregate_month + relativedelta(months=1, days=-1)  # 統計を取る月の最終日
+            # 統計を取る月の今日
+            this_day_aggregate_month = today + relativedelta(months=-i)
+            # 統計を取る月の1日
+            first_day_aggregate_month = this_day_aggregate_month.replace(day=1)
+            # 統計を取る月の最終日
+            last_day_aggregate_month = first_day_aggregate_month + relativedelta(months=1, days=-1)
 
             sale_objects_aggregate_month = Sale.objects.filter(sold_at__range=[
                                                                                first_day_aggregate_month,
                                                                                last_day_aggregate_month
                                                                                ])
 
-            aggregate_date = '%i年%i月' % (this_day_aggregate_month.year, this_day_aggregate_month.month)  # 統計を取る年月
+            # 統計を取る年月
+            aggregate_date = '%i年%i月' % (this_day_aggregate_month.year, this_day_aggregate_month.month)
             revenue = aggregate_revenue(sale_objects_aggregate_month)
             detail = aggregate_detail(sale_objects_aggregate_month)
 
             sales_information.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
         elif date_type == 'day':
-            aggregate_date = today + timedelta(days=-i)  # 統計を取る年月日
+            # 統計を取る年月日
+            aggregate_date = today + timedelta(days=-i)
 
             sale_objects_aggregate_date = Sale.objects.filter(sold_at__date=aggregate_date)
 
