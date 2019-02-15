@@ -1,0 +1,12 @@
+[
+  {
+    "model": "sales_management_system.fruit",
+    "pk": 1,
+    "fields": {
+      "name": "リンゴ",
+      "price": 100,
+      "created_at": "2018-12-10 09:18:30.845202",
+      "updated_at": "2018-12-10 09:18:30.845202"
+    }
+  }
+]
