@@ -134,6 +134,8 @@ class TestSaleManagementView(TestCase):
 
 
 class TestSaleFormView(TestCase):
+    fixtures = ['test_views.json']
+
     def setUp(self):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
@@ -144,11 +146,37 @@ class TestSaleFormView(TestCase):
         self.assertRedirects(response, '/login/?redirect_to=/sale-form/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
 
-    def test_authenticated_get(self):
+    def test_authenticated_create_get(self):
         self.client.login(**self.credentials)
         response = self.client.get('/sale-form/')
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
+
+    def test_authenticated_update_get(self):
+        self.client.login(**self.credentials)
+        response = self.client.get('/sale-form/1/')
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
+
+
+class TestSaleDeleteView(TestCase):
+    fixtures = ['test_views.json']
+
+    def setUp(self):
+        self.credentials = {'username': 'testuser', 'password': 'password'}
+        User.objects.create_user(**self.credentials)
+
+    # ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクト
+    def test_not_authenticated_get(self):
+        response = self.client.get('/delete-sale/1/')
+        self.assertRedirects(response, '/login/?redirect_to=/delete-sale/1/', status_code=302,
+                             target_status_code=200, fetch_redirect_response=True)
+
+    def test_authenticated_get(self):
+        self.client.login(**self.credentials)
+        response = self.client.get('/delete-sale/1/')
+        self.assertRedirects(response, '/sale-management/', status_code=302,
+                             target_status_code=200, fetch_redirect_response=True)
 
 
 class TestSaleStatisticsView(TestCase):
