@@ -19,7 +19,9 @@ class Sale(models.Model):
 
     @property
     def calclate_revenue(self):
-        print(self.fruit)
+        """
+            revenueをFruitのpriceとamountから求める
+        """
         fruit_obj = Fruit.objects.get(name__exact=self.fruit)
         return fruit_obj.price * self.amount
 
