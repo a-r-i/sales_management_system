@@ -146,7 +146,27 @@ class TestSaleManagementView(TestCase):
         self.assertTemplateUsed(response, 'sales_management_system/sale_management.html')
 
 
-class TestSaleFormView(TestCase):
+class TestSaleCreateView(TestCase):
+    def setUp(self):
+        self.credentials = {'username': 'testuser', 'password': 'password'}
+        User.objects.create_user(**self.credentials)
+
+    def test_not_authenticated_get(self):
+        """
+            ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
+        """
+        response = self.client.get('/create-sale/')
+        self.assertRedirects(response, '/login/?redirect_to=/create-sale/', status_code=302,
+                             target_status_code=200, fetch_redirect_response=True)
+
+    def test_authenticated_get(self):
+        self.client.login(**self.credentials)
+        response = self.client.get('/create-sale/')
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
+
+
+class TestSaleUpdateView(TestCase):
     fixtures = ['test_views.json']
 
     def setUp(self):
@@ -157,19 +177,13 @@ class TestSaleFormView(TestCase):
         """
             ログインせず、ログインページ以外のページにアクセスした場合、ログインページへリダイレクトすることを検証
         """
-        response = self.client.get('/sale-form/')
-        self.assertRedirects(response, '/login/?redirect_to=/sale-form/', status_code=302,
+        response = self.client.get('/update-sale/1/')
+        self.assertRedirects(response, '/login/?redirect_to=/update-sale/1/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
 
-    def test_authenticated_create_get(self):
+    def test_authenticated_get(self):
         self.client.login(**self.credentials)
-        response = self.client.get('/sale-form/')
-        self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
-
-    def test_authenticated_update_get(self):
-        self.client.login(**self.credentials)
-        response = self.client.get('/sale-form/1/')
+        response = self.client.get('/update-sale/1/')
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
 
