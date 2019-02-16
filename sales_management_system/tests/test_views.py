@@ -83,6 +83,15 @@ class TestFruitCreateView(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'sales_management_system/fruit_form.html')
 
+    def test_create(self):
+        """
+            データをPOSTするとFruitテーブルのレコードが1件作成されるかを検証
+        """
+        self.client.login(**self.credentials)
+        fruit_count = Fruit.objects.count()
+        self.client.post("/create-fruit/", {'name': "リンゴ", 'price': 100})
+        self.assertEqual(Fruit.objects.count(), fruit_count+1)
+
 
 class TestFruitUpdateView(TestCase):
     fixtures = ['test_views.json']
@@ -127,23 +136,15 @@ class TestFruitDeleteView(TestCase):
         self.assertRedirects(response, '/fruit-list/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
     
-    def test_get_delete(self):
+    def test_delete(self):
         """
             削除リンクを押すと、対象の果物が削除されることを検証
         """
         self.client.login(**self.credentials)
-
         pk = 1
-
-        # 事前状態の検証
         fruit_count = Fruit.objects.filter(pk=pk).count()
-        self.assertEqual(fruit_count, 1)
-
         self.client.get('/delete-fruit/%i/' % pk)
-
-        # 事後状態の検証
-        fruit_count = Fruit.objects.filter(pk=pk).count()
-        self.assertEqual(fruit_count, 0)
+        self.assertEqual(Fruit.objects.filter(pk=pk).count(), fruit_count-1)
 
 
 class TestSaleManagementView(TestCase):
@@ -167,6 +168,8 @@ class TestSaleManagementView(TestCase):
 
 
 class TestSaleCreateView(TestCase):
+    fixtures = ['test_views.json']
+
     def setUp(self):
         self.credentials = {'username': 'testuser', 'password': 'password'}
         User.objects.create_user(**self.credentials)
@@ -184,6 +187,15 @@ class TestSaleCreateView(TestCase):
         response = self.client.get('/create-sale/')
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
+
+    def test_create(self):
+        """
+            データをPOSTするとSaleテーブルのレコードが1件作成されるかを検証
+        """
+        self.client.login(**self.credentials)
+        sale_count = Sale.objects.count()
+        self.client.post("/create-sale/", {'fruit': 1, 'amount': 1, 'sold_at': '2018-12-10 09:18'})
+        self.assertEqual(Sale.objects.count(), sale_count+1)
 
 
 class TestSaleUpdateView(TestCase):
@@ -229,23 +241,15 @@ class TestSaleDeleteView(TestCase):
         self.assertRedirects(response, '/sale-management/', status_code=302,
                              target_status_code=200, fetch_redirect_response=True)
 
-    def test_get_delete(self):
+    def test_delete(self):
         """
             削除リンクを押すと、対象の販売情報が削除されることを検証
         """
         self.client.login(**self.credentials)
-
         pk = 1
-
-        # 事前状態の検証
         sale_count = Sale.objects.filter(pk=pk).count()
-        self.assertEqual(sale_count, 1)
-
-        self.client.get('/delete-sale/%i/' % pk)
-
-        # 事後状態の検証
-        sale_count = Sale.objects.filter(pk=pk).count()
-        self.assertEqual(sale_count, 0)
+        self.client.get('/delete-fruit/%i/' % pk)
+        self.assertEqual(Sale.objects.filter(pk=pk).count(), sale_count-1)
 
 
 class TestSaleStatisticsView(TestCase):
