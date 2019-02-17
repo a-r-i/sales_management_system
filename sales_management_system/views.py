@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 
 from .forms import LoginForm, FruitForm, SaleForm, SaleImportFromCSVForm
 from .models import Fruit, Sale
-from .services import aggregate_sales_information, aggregate_revenue, aggregate_detail
+from .services import aggregate_sales_information, aggregate_revenue
 
 
 class Login(LoginView):
