@@ -115,6 +115,9 @@ class TestFruitUpdateView(TestCase):
         self.assertTemplateUsed(response, 'sales_management_system/fruit_form.html')
 
     def test_update(self):
+        """
+             データをPOSTするとレコードの内容が更新されるかを検証
+        """
         self.client.login(**self.credentials)
 
         pk = 2
@@ -232,11 +235,15 @@ class TestSaleUpdateView(TestCase):
         self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
 
     def test_update(self):
+        """
+             データをPOSTするとレコードの内容が更新されるかを検証
+        """
         self.client.login(**self.credentials)
 
         pk = 2
 
-        sale = Sale.objects.create(id=pk, fruit=1, amount=1, sold_at='2018-12-10 09:18:30.845202')
+        fruit = Fruit.objects.get(id=1)
+        sale = Sale.objects.create(id=pk, fruit=fruit, amount=1, sold_at='2018-12-10 09:18:30.845202')
 
         self.client.post('/update-sale/%i/' % pk, {'fruit': 1, 'amount': 2, 'sold_at': '2018-12-10 09:18:30.845202'})
 
