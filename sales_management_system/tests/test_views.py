@@ -114,6 +114,18 @@ class TestFruitUpdateView(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'sales_management_system/fruit_form.html')
 
+    def test_update(self):
+        self.client.login(**self.credentials)
+
+        pk = 2
+
+        fruit = Fruit.objects.create(id=pk, name='リンゴ', price=100)
+
+        self.client.post('/update-fruit/%i/' % pk, {'name': 'ブルーベリー', 'price': 100})
+
+        fruit.refresh_from_db()
+        self.assertEqual(fruit.name, 'ブルーベリー')
+
 
 class TestFruitDeleteView(TestCase):
     fixtures = ['test_views.json']
@@ -218,6 +230,18 @@ class TestSaleUpdateView(TestCase):
         response = self.client.get('/update-sale/1/')
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, 'sales_management_system/sale_form.html')
+
+    def test_update(self):
+        self.client.login(**self.credentials)
+
+        pk = 2
+
+        sale = Sale.objects.create(id=pk, fruit=1, amount=1, sold_at='2018-12-10 09:18:30.845202')
+
+        self.client.post('/update-sale/%i/' % pk, {'fruit': 1, 'amount': 2, 'sold_at': '2018-12-10 09:18:30.845202'})
+
+        sale.refresh_from_db()
+        self.assertEqual(sale.amount, 2)
 
 
 class TestSaleDeleteView(TestCase):
