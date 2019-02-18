@@ -1,7 +1,6 @@
 from datetime import datetime, timedelta
 
 from dateutil.relativedelta import relativedelta
-import pytz
 
 from .models import Sale
 
@@ -18,8 +17,7 @@ def aggregate_revenue(sale_objects):
 def aggregate_sales_information(date_type, number):
     sales_information = []
 
-    now = datetime.now(pytz.timezone('Asia/Tokyo'))
-    # now = datetime.now()
+    now = datetime.now()
     today = now.date()
 
     for i in range(1, number + 1):
