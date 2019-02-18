@@ -19,21 +19,17 @@ def aggregate_sales_information(date_type, number):
     sales_information = []
 
     now = datetime.now(pytz.timezone('Asia/Tokyo'))
+    # now = datetime.now()
     today = now.date()
 
     for i in range(1, number + 1):
         if date_type == 'month':
             # 統計を取る月の今日
             this_day_aggregate_month = today + relativedelta(months=-i)
-            # 統計を取る月の1日
-            first_day_aggregate_month = this_day_aggregate_month.replace(day=1)
-            # 統計を取る月の最終日
-            last_day_aggregate_month = first_day_aggregate_month + relativedelta(months=1, days=-1)
 
-            sale_objects_aggregate_month = Sale.objects.filter(sold_at__range=[
-                                                                               first_day_aggregate_month,
-                                                                               last_day_aggregate_month
-                                                                               ])
+            sale_objects_aggregate_month = Sale.objects.filter(sold_at__year=this_day_aggregate_month.year,
+                                                               sold_at__month=this_day_aggregate_month.month
+                                                               )
 
             # 統計を取る年月
             aggregate_date = '%i年%i月' % (this_day_aggregate_month.year, this_day_aggregate_month.month)
