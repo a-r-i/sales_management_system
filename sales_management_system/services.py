@@ -53,7 +53,7 @@ def aggregate_sales_information(date_type, number):
 
 def aggregate_detail(sale_objects):
     """
-        同じ果物の販売情報」をひとつに合算し、以下の形式の二次元辞書をつくる
+        「同じ果物の販売情報」をひとつに合算し、以下の形式の二次元辞書をつくる
         {'ブルーベリー': {'revenue': 200, 'amount': 4}, 'メロン': {'revenue': 20200, 'amount': 8}}
     """
     detail_dict = {}
