@@ -32,7 +32,8 @@ def aggregate_sales_information(date_type, number):
             # 統計を取る年月
             aggregate_date = '%i年%i月' % (this_day_aggregate_month.year, this_day_aggregate_month.month)
             revenue = aggregate_revenue(sale_objects_aggregate_month)
-            detail = aggregate_detail(sale_objects_aggregate_month)
+            detail_dict = aggregate_detail(sale_objects_aggregate_month)
+            detail = detail_dict_to_str(detail_dict)
 
             sales_information.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
         elif date_type == 'day':
@@ -42,7 +43,8 @@ def aggregate_sales_information(date_type, number):
             sale_objects_aggregate_date = Sale.objects.filter(sold_at__date=aggregate_date)
 
             revenue = aggregate_revenue(sale_objects_aggregate_date)
-            detail = aggregate_detail(sale_objects_aggregate_date)
+            detail_dict = aggregate_detail(sale_objects_aggregate_date)
+            detail = detail_dict_to_str(detail_dict)
 
             sales_information.append({'date': aggregate_date, 'revenue': revenue, 'detail': detail})
 
@@ -64,6 +66,10 @@ def aggregate_detail(sale_objects):
             detail_dict[fruit_name]['revenue'] = obj.revenue
             detail_dict[fruit_name]['amount'] = obj.amount
 
+    return detail_dict
+
+
+def detail_dict_to_str(detail_dict):
     detail = ''
 
     for key, value in detail_dict.items():
