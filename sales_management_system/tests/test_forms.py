@@ -35,7 +35,7 @@ class TestSaleForm(TestCase):
     def test_valid(self):
         form_data = {
                         'fruit': 1,
-                        'amount': 100,
+                        'amount': 5,
                         'revenue': 500,
                         'sold_at': '2018-12-10 09:18:30.845202'
                     }
@@ -61,7 +61,7 @@ class TestSaleForm(TestCase):
         """
         form_data = {
                         'fruit': 1,
-                        'amount': 100,
+                        'amount': 5,
                         'revenue': 500,
                         'sold_at': '20181210 09:18:30.845202'
                     }

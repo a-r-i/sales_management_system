@@ -240,7 +240,7 @@ class TestSaleUpdateView(TestCase):
         """
         self.client.login(**self.credentials)
 
-        pk = 2
+        pk = 3
 
         fruit = Fruit.objects.get(id=1)
         sale = Sale.objects.create(id=pk, fruit=fruit, amount=1, sold_at='2018-12-10 09:18:30.845202')

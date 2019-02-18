@@ -14,9 +14,19 @@
     "pk": 1,
     "fields": {
       "fruit": 1,
-      "amount": 100,
+      "amount": 5,
       "revenue": 500,
       "sold_at": "2018-12-10 09:18:30.845202"
+    }
+  },
+      {
+    "model": "sales_management_system.sale",
+    "pk": 2,
+    "fields": {
+      "fruit": 1,
+      "amount": 2,
+      "revenue": 200,
+      "sold_at": "2018-12-11 10:18:30.845202"
     }
   }
 ]
