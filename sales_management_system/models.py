@@ -26,5 +26,7 @@ class Sale(models.Model):
         return fruit_obj.price * self.amount
 
     def save(self, *args, **kwargs):
-        self.revenue = self.calclate_revenue
+        # revenueが与えられていない場合、priceとamountから求める
+        if self.revenue is None:
+            self.revenue = self.calclate_revenue
         super(Sale, self).save(*args, **kwargs)

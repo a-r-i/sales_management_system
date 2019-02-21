@@ -46,13 +46,14 @@ class SaleImportFromCSVForm(forms.Form):
             except Fruit.DoesNotExist:
                 print('Fruit.DoesNotExist')
             else:
-                amount = row[1]
-                revenue = row[2]
+                amount = int(row[1])
+                revenue = int(row[2])
                 try:
                     sold_at = datetime.strptime(row[3], '%Y-%m-%d %H:%M')
                 except ValueError:
                     print('ValueError')
                 else:
+                    print(fruit, amount, revenue, sold_at)
                     sale = Sale(
                                 fruit=fruit,
                                 amount=amount,
